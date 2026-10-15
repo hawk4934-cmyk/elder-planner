@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B2430">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="엘더플래너">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>엘더플래너</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F2F4F6; --card:#FFFFFF; --ink:#1B2430; --sub:#5A6573; --mute:#6B7684; --line:#E1E5EA; --soft:#EEF0F2;
+  --acc:#1F5E6B; --acc-d:#16444E; --acc-l:#E3ECEE;
+  --warn:#B5651D; --warn-d:#8A4512; --warn-l:#FBEBDD;
+  --ok:#2E8A51; --ok-d:#22663C; --ok-l:#E2F1E7;
+  --late:#B3412E; --late-l:#F8E3DF; --purple:#5B4A86;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{font-family:'IBM Plex Sans KR',system-ui,-apple-system,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;font-size:15px}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+a{color:var(--acc)}
+#app{max-width:560px;margin:0 auto;padding:18px 16px calc(96px + env(safe-area-inset-bottom))}
+.row{display:flex;align-items:center;gap:10px}
+.between{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.col{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--acc)}
+.h1{font-size:26px;font-weight:700;margin:0}
+.h2{font-size:17px;font-weight:700;margin:6px 0 0}
+.sub{font-size:13px;color:var(--sub)}
+.mute{color:var(--mute)}
+.card{background:var(--card);border-radius:16px;padding:14px}
+.list{display:flex;flex-direction:column;gap:10px}
+.icon-btn{width:44px;height:44px;border:none;border-radius:12px;background:var(--card);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);flex:none}
+.icon-btn.ghost{background:transparent}
+.btn{min-height:48px;border-radius:14px;border:1px solid #C3CAD2;background:#fff;font-weight:600;padding:0 16px;cursor:pointer}
+.btn.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.danger{color:var(--late);border-color:#E6B8B0}
+.btn.block{width:100%}
+.btn.dash{border-style:dashed;color:var(--sub);background:transparent;font-weight:500}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:3px 8px;border-radius:8px;white-space:nowrap}
+.st-none{background:var(--soft);color:var(--sub)} .st-set{background:var(--acc-l);color:var(--acc-d)}
+.st-prep{background:var(--warn-l);color:var(--warn-d)} .st-done{background:var(--ok-l);color:var(--ok-d)}
+.st-late{background:var(--late-l);color:var(--late)} .st-any{background:#ECE8F4;color:var(--purple)}
+.bar{height:4px;border-radius:4px;background:#E6EAEE;overflow:hidden}
+.bar>i{display:block;height:4px;border-radius:4px}
+.dark{background:var(--ink);color:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.dark .sub{color:#C9D3DD}
+.dday{width:56px;flex:none;text-align:center;border-radius:12px;padding:6px 0;background:var(--warn)}
+.dday.late{background:var(--late)} .dday.soft{background:#33404F}
+.dday small{display:block;font-size:11px} .dday b{font-size:16px}
+.grp{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink)}
+.num{width:36px;height:36px;flex:none;border-radius:10px;background:var(--acc-l);color:var(--acc);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grow{flex:1 1 auto;min-width:0}
+.field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--sub)}
+.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;min-height:46px;color:var(--ink);font-size:15px;width:100%}
+textarea{resize:vertical}
+.kv{display:flex;justify-content:space-between;align-items:center;min-height:48px;border-bottom:1px solid var(--soft);gap:10px}
+.kv:last-child{border-bottom:none}
+.kv input,.kv select{border:none;background:transparent;text-align:right;font-weight:600;min-height:44px;font-size:15px;max-width:60%;color:var(--ink)}
+.task{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 4px;border-bottom:1px solid var(--soft)}
+.task:last-child{border-bottom:none}
+.task input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc);margin:0;flex:none}
+.task.done span{color:#9AA3AE;text-decoration:line-through}
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:#E3E7EB;border-radius:14px;padding:4px}
+.seg button{min-height:40px;border:none;border-radius:10px;background:transparent;color:var(--sub);font-weight:600;cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink)}
+.cal{background:#fff;border-radius:18px;padding:10px 6px 8px}
+.cal .dow,.cal .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal .dow{text-align:center;font-size:11px;color:var(--mute);padding-bottom:4px}
+.cal .grid button{min-height:60px;border:none;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 1px;cursor:pointer;border-radius:10px}
+.cal .grid button.out{opacity:.35}
+.cal .grid button.sel{outline:2px solid var(--acc);outline-offset:-2px}
+.cal .grid button.today .d{background:var(--ink);color:#fff;border-radius:99px;padding:0 6px}
+.cal .d{font-size:13px}
+.cal .sun{color:var(--late)}
+.cal .tag{font-size:9px;line-height:1.3;color:#fff;padding:1px 3px;border-radius:4px;max-width:100%;overflow:hidden;white-space:nowrap}
+.years{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.years button{background:#fff;border:none;border-radius:14px;padding:10px;min-height:96px;display:flex;flex-direction:column;gap:5px;align-items:stretch;text-align:left;cursor:pointer}
+.years button.now{outline:2px solid var(--acc);outline-offset:-2px}
+.years .it{font-size:11px;line-height:1.3;border-radius:6px;padding:2px 5px}
+nav#tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:6px 4px calc(10px + env(safe-area-inset-bottom));z-index:10}
+nav#tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+nav#tabs a{min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--mute);font-size:11px}
+nav#tabs a.on{color:var(--acc);font-weight:600}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin:-6px -6px 6px}
+.empty{text-align:center;color:var(--mute);padding:22px 10px;font-size:14px}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;max-width:90vw}
+#toast.show{opacity:1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<nav id="tabs" aria-label="주 메뉴"><div class="in">
+  <a href="#home" data-tab="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>홈</a>
+  <a href="#cal" data-tab="cal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>달력</a>
+  <a href="#records" data-tab="records"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h6"/></svg>기록보관</a>
+  <a href="#settings" data-tab="settings"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>설정</a>
+</div></nav>
+<div id="toast" role="status"></div>
+<input type="file" id="importFile" accept="application/json" class="sr" aria-label="백업 파일 선택">
+
+<script type="module">
+/* =========================================================
+   엘더플래너 v0.1
+   - FIREBASE_CONFIG 가 비어 있으면 '기기 저장' 모드로 동작
+   - 값을 넣으면 Google 로그인 후 Firestore 에 동기화
+     (경로: planners/{plannerId}/items, planners/{plannerId}/events)
+   - plannerId 문서의 members 배열에 uid 를 추가하면 나중에 공유 가능
+   ========================================================= */
+const FIREBASE_CONFIG = null;
+/* 예시 — Firebase 콘솔 > 프로젝트 설정 > 웹 앱 에서 복사
+const FIREBASE_CONFIG = {
+  apiKey: "...", authDomain: "...", projectId: "...",
+  storageBucket: "...", messagingSenderId: "...", appId: "..."
+};
+*/
+const APP_VERSION = '0.1';
+
+/* ---------- 기본 일정 항목 (첨부 표 기준) ----------
+   [그룹, [[항목명, 주기표시, 연간횟수(0=수시), 준비사항[], 알림(일 전, null=직접설정)]] ] */
+const SEED = [
+  ['특별강연', [['특별강연', '봄 · 가을', 2, ['연사'], 90]]],
+  ['주의만찬 기념식', [['주의만찬 기념식', '봄', 1, ['장소', '연사 및 진행'], 90]]],
+  ['순회방문', [['순회방문', '연 2회', 2, ['서류', '일정계획표', '회중광고'], 30]]],
+  ['대회', [
+    ['순회대회', '연 2회', 2, ['서류', '일정계획표', '회중광고'], 60],
+    ['순회대회 P모임', '연 1회', 1, [], null],
+    ['지역대회', '', 1, ['서류', '일정계획표', '회중광고'], null],
+    ['국제대회', '해당 시', 0, ['신청접수 (서기)'], null],
+    ['특별모임', '해당 시', 0, ['회중광고'], null]]],
+  ['특별활동', [['특별활동 (봉사감독자)', '', 1, ['기간 및 내용'], null]]],
+  ['장로모임', [
+    ['정기장로모임', '연 4회', 4, ['회의록 (의제)'], null],
+    ['간이 장로모임', '2회', 2, ['회의록 (의제)'], null]]],
+  ['정기파이오니아 모임', [['정기파이오니아 모임', '연말연초', 1, ['회중광고', '연사'], null]]],
+  ['신권학교', [
+    ['장로학교', '', 1, ['일정확인'], null],
+    ['왕국전도학교', '', 1, ['일정확인'], null],
+    ['파이오니아학교', '', 1, ['일정확인 (해당P)', '식사'], null]]],
+  ['회중경조사', [
+    ['결혼', '수시', 0, ['광고'], null],
+    ['장례', '수시', 0, ['회중광고', '장례식 준비'], null]]],
+  ['기타 행사', [['야유회', '', 1, ['진행', '장소 섭외'], null]]]
+];
+function seedItems() {
+  const out = []; let n = 0;
+  SEED.forEach(([group, items]) => items.forEach(([name, freq, times, prep, leadDays]) => {
+    n++; out.push({ id: 'i' + String(n).padStart(2, '0'), group, name, freq, times, prep, leadDays, order: n });
+  }));
+  return out;
+}
+const LEADS = [[null, '직접 설정 안 함'], [7, '1주 전'], [14, '2주 전'], [30, '1달 전'], [60, '2달 전'], [90, '3달 전']];
+const leadLabel = v => (LEADS.find(l => l[0] === (v ?? null)) || [null, v + '일 전'])[1];
+
+/* ---------- 유틸 ---------- */
+const $app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const today = () => ymd(new Date());
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
+const diffDays = (a, b) => Math.round((parse(a) - parse(b)) / 86400000);
+const DOW = ['일', '월', '화', '수', '목', '금', '토'];
+const md = s => { if (!s) return ''; const d = parse(s); return `${d.getMonth() + 1}.${pad(d.getDate())} (${DOW[d.getDay()]})`; };
+const span = e => e.end && e.end !== e.start ? `${md(e.start)} – ${md(e.end)}` : md(e.start);
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const byStart = (a, b) => (a.start || '').localeCompare(b.start || '');
+const upsert = (arr, x) => { const i = arr.findIndex(y => y.id === x.id); if (i < 0) arr.push(x); else arr[i] = x; };
+const ico = {
+  back: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  next: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  prev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  plus: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+  x: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  edit: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>'
+};
+let toastT;
+function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+
+/* ---------- 상태 ---------- */
+const S = {
+  items: [], events: [],
+  year: new Date().getFullYear(),
+  cal: { mode: 'month', cursor: today(), sel: today() },
+  recQ: '', mode: 'local', user: null, cloudReady: false, cloudError: ''
+};
+const itemOf = id => S.items.find(i => i.id === id);
+const sortedItems = () => [...S.items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+function groups() {
+  const m = new Map();
+  sortedItems().forEach(i => { if (!m.has(i.group)) m.set(i.group, []); m.get(i.group).push(i); });
+  return m;
+}
+const yearOf = e => +String(e.start).slice(0, 4);
+const eventsOf = (itemId, year) => S.events.filter(e => e.itemId === itemId && (!year || yearOf(e) === year)).sort(byStart);
+const leadOf = e => e.leadDays !== undefined ? e.leadDays : (itemOf(e.itemId)?.leadDays ?? null);
+const alertDate = e => { const l = leadOf(e); return l ? addDays(e.start, -l) : null; };
+const doneTasks = e => (e.tasks || []).filter(t => t.done).length;
+function evState(e) {
+  if (e.done) return 'done';
+  const t = today();
+  if ((e.end || e.start) < t) return 'late';
+  const a = alertDate(e);
+  if ((a && a <= t) || diffDays(e.start, t) <= 14) return 'prep';
+  return 'set';
+}
+const ST = {
+  none: ['미설정', 'st-none', '#C3CAD2'], set: ['설정됨', 'st-set', '#1F5E6B'], prep: ['준비중', 'st-prep', '#B5651D'],
+  done: ['완료', 'st-done', '#2E8A51'], late: ['정리 필요', 'st-late', '#B3412E'], any: ['수시', 'st-any', '#5B4A86']
+};
+const chip = k => `<span class="chip ${ST[k][1]}">${ST[k][0]}</span>`;
+
+/* ---------- 저장소: 기기 저장 ---------- */
+const LS_KEY = 'elderplanner.v1';
+function readLocal() { try { return JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch (e) { return null; } }
+const Local = {
+  load() {
+    const d = readLocal();
+    S.items = d?.items?.length ? d.items : seedItems();
+    S.events = d?.events || [];
+    if (!d) this.persist();
+  },
+  persist() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ items: S.items, events: S.events })); }
+    catch (e) { toast('기기 저장에 실패했습니다'); }
+  },
+  async putEvent() { this.persist(); }, async delEvent() { this.persist(); },
+  async putItem() { this.persist(); }, async delItem() { this.persist(); }
+};
+
+/* ---------- 저장소: Firebase ---------- */
+const Cloud = {
+  api: null, pid: null, unsubs: [],
+  ref(col, id) { const { F, db } = this.api; return F.doc(db, 'planners', this.pid, col, id); },
+  clean: o => JSON.parse(JSON.stringify(o)),
+  async putEvent(e) { await this.api.F.setDoc(this.ref('events', e.id), this.clean(e)); },
+  async delEvent(id) { await this.api.F.deleteDoc(this.ref('events', id)); },
+  async putItem(i) { await this.api.F.setDoc(this.ref('items', i.id), this.clean(i)); },
+  async delItem(id) { await this.api.F.deleteDoc(this.ref('items', id)); }
+};
+let backend = Local;
+
+async function startCloud() {
+  const base = 'https://www.gstatic.com/firebasejs/10.12.2/';
+  try {
+    const [A, Au, F] = await Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]);
+    const app = A.initializeApp(FIREBASE_CONFIG);
+    const auth = Au.getAuth(app);
+    let db;
+    try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache() }); } catch (e) { db = F.getFirestore(app); }
+    Cloud.api = { A, Au, F, auth, db };
+    S.cloudReady = true;
+    Au.onAuthStateChanged(auth, user => onUser(user).catch(err => { S.cloudError = err.message; render(); }));
+    render();
+  } catch (err) {
+    S.cloudError = 'Firebase를 불러오지 못했습니다: ' + err.message;
+    render();
+  }
+}
+async function onUser(user) {
+  const { F, db } = Cloud.api;
+  Cloud.unsubs.forEach(u => u()); Cloud.unsubs = [];
+  S.user = user;
+  if (!user) { backend = Local; S.mode = 'local'; Local.load(); render(); return; }
+  backend = Cloud; S.mode = 'cloud';
+  Cloud.pid = user.uid;
+  const pref = F.doc(db, 'planners', Cloud.pid);
+  const snap = await F.getDoc(pref);
+  if (!snap.exists()) {
+    await F.setDoc(pref, { owner: user.uid, members: [user.uid], name: '엘더플래너', created: Date.now() });
+  }
+  let checked = false;
+  Cloud.unsubs.push(F.onSnapshot(F.collection(db, 'planners', Cloud.pid, 'items'), async qs => {
+    if (!checked && !qs.metadata.fromCache) {
+      checked = true;
+      if (qs.empty) { await migrateToCloud(); return; }
+    }
+    S.items = qs.docs.map(d => d.data());
+    scheduleRender(true);
+  }));
+  Cloud.unsubs.push(F.onSnapshot(F.collection(db, 'planners', Cloud.pid, 'events'), qs => {
+    S.events = qs.docs.map(d => d.data());
+    scheduleRender(true);
+  }));
+}
+async function migrateToCloud() {
+  const { F, db } = Cloud.api;
+  const local = readLocal();
+  const items = local?.items?.length ? local.items : seedItems();
+  const events = local?.events || [];
+  const batch = F.writeBatch(db);
+  items.forEach(i => batch.set(Cloud.ref('items', i.id), Cloud.clean(i)));
+  events.forEach(e => batch.set(Cloud.ref('events', e.id), Cloud.clean(e)));
+  await batch.commit();
+  if (events.length) toast(`기기에 있던 일정 ${events.length}건을 클라우드로 옮겼습니다`);
+}
+async function login() {
+  const { Au, auth } = Cloud.api;
+  const prov = new Au.GoogleAuthProvider();
+  try { await Au.signInWithPopup(auth, prov); }
+  catch (e) { if (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment') await Au.signInWithRedirect(auth, prov); else toast('로그인 실패: ' + e.code); }
+}
+
+/* ---------- 저장 동작 ---------- */
+async function saveEvent(e, rerender = true) {
+  e.updated = Date.now(); upsert(S.events, e);
+  if (rerender) render();
+  try { await backend.putEvent(e); } catch (err) { toast('저장 실패: ' + err.message); }
+}
+async function removeEvent(id) {
+  S.events = S.events.filter(x => x.id !== id); render();
+  try { await backend.delEvent(id); } catch (err) { toast('삭제 실패: ' + err.message); }
+}
+async function saveItem(i) {
+  upsert(S.items, i); render();
+  try { await backend.putItem(i); } catch (err) { toast('저장 실패: ' + err.message); }
+}
+async function removeItem(id) {
+  S.items = S.items.filter(x => x.id !== id); render();
+  try { await backend.delItem(id); } catch (err) { toast('삭제 실패: ' + err.message); }
+}
+
+/* ---------- 렌더 제어 (입력 중에는 원격 갱신으로 화면을 다시 그리지 않음) ---------- */
+let pending = false;
+function typing() { const a = document.activeElement; return a && $app.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.type !== 'checkbox'; }
+function scheduleRender(remote) { if (remote && typing()) { pending = true; return; } render(); }
+document.addEventListener('focusout', () => setTimeout(() => { if (pending && !typing()) { pending = false; render(); } }, 0));
+
+/* ---------- 화면: 홈 ---------- */
+function groupSummary(items, year) {
+  let expected = 0, sched = 0, done = 0, prep = false, late = false, nextDate = null;
+  const t = today();
+  items.forEach(it => {
+    expected += it.times || 0;
+    eventsOf(it.id, year).forEach(e => {
+      sched++;
+      const s = evState(e);
+      if (s === 'done') done++;
+      if (s === 'prep') prep = true;
+      if (s === 'late') late = true;
+      if (!e.done && e.start >= t && (!nextDate || e.start < nextDate)) nextDate = e.start;
+    });
+  });
+  let st;
+  if (late) st = 'late';
+  else if (prep) st = 'prep';
+  else if (expected > 0 && done >= expected) st = 'done';
+  else if (sched > 0) st = 'set';
+  else st = expected === 0 ? 'any' : 'none';
+  const base = expected || sched;
+  const pct = base ? Math.min(100, Math.round(done / base * 100)) : 0;
+  const count = expected ? `${done}/${expected}` : (sched ? `${done}/${sched}` : '');
+  return { st, pct, nextDate, count };
+}
+function viewHome() {
+  const y = S.year, t = today();
+  const urgent = S.events.filter(e => !e.done && ['prep', 'late'].includes(evState(e))).sort(byStart);
+  const upcoming = S.events.filter(e => !e.done && evState(e) === 'set').sort(byStart).slice(0, 2);
+  const todayD = new Date();
+  let h = `
+  <div class="between" style="align-items:flex-end;margin-bottom:16px">
+    <div class="col" style="gap:2px">
+      <div class="eyebrow">ELDER PLANNER</div>
+      <div class="row" style="gap:4px">
+        <button class="icon-btn ghost" data-act="year" data-d="-1" aria-label="이전 해">${ico.prev}</button>
+        <h1 class="h1">${y}년</h1>
+        <button class="icon-btn ghost" data-act="year" data-d="1" aria-label="다음 해">${ico.next}</button>
+      </div>
+      <div class="sub">${todayD.getMonth() + 1}월 ${todayD.getDate()}일 ${DOW[todayD.getDay()]}요일</div>
+    </div>
+  </div>
+  <section class="dark" aria-label="지금 준비할 일">
+    <div class="between"><div class="sub" style="font-weight:600">지금 준비할 일</div><div class="sub">${urgent.length}건</div></div>`;
+  if (!urgent.length) {
+    h += `<div class="sub">알림 시점이 된 일정이 없습니다.${upcoming.length ? '' : ' 주요 일정에서 날짜를 잡아 보세요.'}</div>`;
+  }
+  urgent.slice(0, 4).forEach(e => {
+    const s = evState(e); const d = diffDays(e.start, t);
+    const lab = s === 'late' ? '지남' : (d === 0 ? 'D-DAY' : `D-${d}`);
+    h += `<a href="#event/${e.id}" class="row" style="text-decoration:none;color:#fff;gap:12px">
+      <div class="dday ${s === 'late' ? 'late' : ''}"><small>${lab}</small><b>${md(e.start).split(' ')[0]}</b></div>
+      <div class="grow"><div style="font-weight:600" class="ellipsis">${esc(e.title)}</div>
+      <div class="sub ellipsis">${s === 'late' ? '날짜가 지났습니다 · 완료 처리 또는 기록 정리' : `준비 ${doneTasks(e)}/${(e.tasks || []).length} 완료`}</div></div></a>`;
+  });
+  if (urgent.length > 4) h += `<div class="sub">외 ${urgent.length - 4}건</div>`;
+  if (upcoming.length) {
+    h += `<div style="height:1px;background:#33404F"></div>`;
+    upcoming.forEach(e => {
+      const a = alertDate(e);
+      h += `<a href="#event/${e.id}" class="between" style="text-decoration:none;color:#fff;font-size:14px"><span class="ellipsis">${esc(e.title)}</span><span style="color:#C9D3DD;flex:none">${md(e.start).split(' ')[0]}${a ? ` · 알림 ${md(a).split(' ')[0]}` : ''}</span></a>`;
+    });
+  }
+  h += `</section>
+  <div class="between" style="margin:20px 0 10px"><h2 class="h2" style="margin:0">주요 일정</h2><span class="sub">${y}년</span></div>
+  <div class="list">`;
+  let n = 0;
+  groups().forEach((items, g) => {
+    n++;
+    const sm = groupSummary(items, y);
+    const sub = items.length > 1 ? items.map(i => i.name).join(' · ') : (items[0].prep.length ? '준비: ' + items[0].prep.join(', ') : (items[0].freq || ''));
+    h += `<a class="card grp" href="#group/${encodeURIComponent(g)}">
+      <div class="num">${n}</div>
+      <div class="grow col" style="gap:4px">
+        <div class="row" style="gap:6px;align-items:baseline"><span style="font-weight:600">${esc(g)}</span><span class="sub" style="font-size:12px">${esc(items.length > 1 ? items.length + '종' : (items[0].freq || ''))}</span></div>
+        <div class="sub ellipsis" style="font-size:12px">${esc(sub)}</div>
+        <div class="bar"><i style="width:${sm.pct}%;background:${ST[sm.st][2]}"></i></div>
+      </div>
+      <div class="col" style="gap:4px;align-items:flex-end;flex:none">${chip(sm.st)}<span class="sub" style="font-size:12px">${sm.nextDate ? md(sm.nextDate).split(' ')[0] : esc(sm.count || '-')}</span></div>
+    </a>`;
+  });
+  return h + `</div>`;
+}
+
+/* ---------- 화면: 그룹 ---------- */
+function viewGroup(g) {
+  const items = groups().get(g);
+  if (!items) return notFound();
+  const y = S.year;
+  let h = topbar('#home', esc(g)) + `<div class="sub" style="margin-bottom:12px">${y}년 일정</div><div class="list">`;
+  items.forEach(it => {
+    const evs = eventsOf(it.id, y);
+    const remain = it.times ? Math.max(0, it.times - evs.length) : 0;
+    h += `<section class="card col" aria-label="${esc(it.name)}">
+      <div class="between">
+        <div class="col" style="gap:2px"><div style="font-weight:700">${esc(it.name)}</div>
+        <div class="sub" style="font-size:12px">${esc(it.freq || (it.times ? `연 ${it.times}회` : '수시'))} · 알림 ${esc(leadLabel(it.leadDays))}</div></div>
+        <a href="#item/${it.id}" class="icon-btn ghost" aria-label="${esc(it.name)} 항목 편집">${ico.edit}</a>
+      </div>
+      ${it.prep.length ? `<div class="sub" style="font-size:13px">준비사항: ${esc(it.prep.join(', '))}</div>` : ''}`;
+    evs.forEach(e => {
+      const s = evState(e);
+      h += `<a href="#event/${e.id}" class="row" style="text-decoration:none;color:var(--ink);background:var(--bg);border-radius:12px;padding:10px 12px;min-height:48px">
+        <div class="grow"><div style="font-weight:600;font-size:14px" class="ellipsis">${esc(e.title)}</div><div class="sub" style="font-size:12px">${span(e)}${(e.tasks || []).length ? ` · 준비 ${doneTasks(e)}/${e.tasks.length}` : ''}</div></div>${chip(s)}</a>`;
+    });
+    if (!evs.length) h += `<div class="sub" style="font-size:13px">${remain ? `아직 날짜가 잡히지 않았습니다 (${remain}회 남음)` : '등록된 일정 없음'}</div>`;
+    else if (remain) h += `<div class="sub" style="font-size:13px">${remain}회 더 잡아야 합니다</div>`;
+    h += `<a class="btn dash block" style="display:flex;align-items:center;justify-content:center;text-decoration:none" href="#new/${it.id}">+ 일정 잡기</a></section>`;
+  });
+  return h + `</div>`;
+}
+
+/* ---------- 화면: 새 일정 ---------- */
+function viewNew(itemId) {
+  const it = itemOf(itemId);
+  if (!it) return notFound();
+  const cnt = eventsOf(it.id, S.year).length;
+  const title = it.times > 1 ? `${it.name} ${cnt + 1}차` : it.name;
+  return topbar(`#group/${encodeURIComponent(it.group)}`, '일정 잡기') + `
+  <form class="col" data-form="new" data-item="${it.id}" style="gap:14px">
+    <label class="field">제목<input name="title" value="${esc(title)}" required></label>
+    <div class="row" style="gap:10px">
+      <label class="field grow">시작일<input type="date" name="start" required></label>
+      <label class="field grow">종료일 (선택)<input type="date" name="end"></label>
+    </div>
+    <label class="field">장소<input name="place" placeholder="예: 왕국회관"></label>
+    <label class="field">준비 알림<select name="lead">${LEADS.map(([v, l]) => `<option value="${v ?? ''}" ${v === (it.leadDays ?? null) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+    <div class="sub">준비사항 ${it.prep.length ? esc(it.prep.join(', ')) + ' 가 체크 목록으로 들어갑니다.' : '은 다음 화면에서 추가할 수 있습니다.'}</div>
+    <button class="btn primary block" type="submit">저장</button>
+  </form>`;
+}
+
+/* ---------- 화면: 일정 상세 ---------- */
+function viewEvent(id) {
+  const e = S.events.find(x => x.id === id);
+  if (!e) return notFound();
+  const it = itemOf(e.itemId);
+  const s = evState(e);
+  const a = alertDate(e);
+  const past = S.events.filter(x => x.itemId === e.itemId && x.id !== e.id && x.done).sort(byStart).reverse().slice(0, 5);
+  const tasks = e.tasks || [];
+  let h = topbar(it ? `#group/${encodeURIComponent(it.group)}` : '#home', '일정 상세') + `
+  <div class="col" style="gap:6px;margin-bottom:14px">
+    <div class="row" style="gap:6px">${it ? `<span class="chip st-set">${esc(it.group)}</span>` : ''}${chip(s)}</div>
+    <label class="sr" for="f-title">제목</label>
+    <input id="f-title" data-f="title" value="${esc(e.title)}" style="font-size:22px;font-weight:700;border:none;background:transparent;padding:4px 0;min-height:44px">
+  </div>
+  <div class="card" style="padding:2px 14px;margin-bottom:16px">
+    <label class="kv"><span class="sub" style="font-size:14px">시작일</span><input type="date" data-f="start" value="${esc(e.start)}"></label>
+    <label class="kv"><span class="sub" style="font-size:14px">종료일</span><input type="date" data-f="end" value="${esc(e.end || '')}"></label>
+    <label class="kv"><span class="sub" style="font-size:14px">장소</span><input data-f="place" value="${esc(e.place || '')}" placeholder="입력"></label>
+    <label class="kv"><span class="sub" style="font-size:14px">알림</span><select data-f="leadDays">${LEADS.map(([v, l]) => `<option value="${v ?? ''}" ${v === leadOf(e) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+    ${a ? `<div class="kv"><span class="sub" style="font-size:14px">준비 시작</span><span style="font-weight:600;color:var(--warn-d)">${md(a)}</span></div>` : ''}
+  </div>
+  <div class="between"><h2 class="h2" style="margin:0">준비사항</h2><span class="sub">${doneTasks(e)} / ${tasks.length}</span></div>
+  <div class="card" style="padding:2px 10px;margin:10px 0 16px">`;
+  tasks.forEach((t, i) => {
+    h += `<div class="task ${t.done ? 'done' : ''}">
+      <input type="checkbox" id="t${i}" data-act="task" data-i="${i}" ${t.done ? 'checked' : ''}>
+      <label for="t${i}" class="grow" style="min-height:44px;display:flex;align-items:center"><span>${esc(t.t)}</span></label>
+      <button class="icon-btn ghost" data-act="deltask" data-i="${i}" aria-label="${esc(t.t)} 삭제">${ico.x}</button></div>`;
+  });
+  h += `<form data-form="task" class="row" style="padding:8px 0;gap:8px">
+      <label class="sr" for="newtask">준비사항 추가</label>
+      <input id="newtask" name="t" placeholder="준비사항 추가" style="flex:1;border:1px solid var(--line);border-radius:10px;min-height:44px;padding:0 12px">
+      <button class="icon-btn" type="submit" style="background:var(--acc);color:#fff" aria-label="추가">${ico.plus}</button></form>
+  </div>
+  <label class="field" style="margin-bottom:16px"><span class="h2" style="color:var(--ink);margin:0">메모 · 기록</span>
+    <textarea data-f="memo" rows="5" placeholder="협의 내용, 연락처, 결정 사항, 다음에 참고할 점 등">${esc(e.memo || '')}</textarea></label>`;
+  if (past.length) {
+    h += `<h2 class="h2" style="margin:0 0 10px">지난 기록 (${esc(it?.name || '')})</h2><div class="list" style="margin-bottom:16px">`;
+    past.forEach(p => {
+      h += `<a href="#event/${p.id}" class="card row" style="text-decoration:none;color:var(--ink);gap:12px">
+        <div style="width:44px;text-align:center;color:var(--ok-d);flex:none"><div style="font-size:11px">${yearOf(p)}</div><div style="font-weight:700">${parse(p.start).getMonth() + 1}월</div></div>
+        <div class="grow"><div style="font-weight:600;font-size:14px" class="ellipsis">${esc(p.title)}</div><div class="sub ellipsis" style="font-size:12px">${p.memo ? esc(p.memo.split('\n')[0]) : `준비 ${doneTasks(p)}/${(p.tasks || []).length}`}</div></div>${ico.next}</a>`;
+    });
+    h += `</div>`;
+  }
+  h += `<div class="col">
+    ${e.done
+      ? `<div class="sub" style="text-align:center">${e.doneAt ? new Date(e.doneAt).toLocaleDateString('ko-KR') + ' 에 ' : ''}기록보관됨</div><button class="btn block" data-act="undone">기록보관 해제 (다시 진행중으로)</button>`
+      : `<button class="btn primary block" data-act="done">완료 후 기록보관</button>`}
+    <button class="btn danger block" data-act="delevent">이 일정 삭제</button>
+  </div>`;
+  return h;
+}
+
+/* ---------- 화면: 항목 편집 ---------- */
+function viewItem(id) {
+  const isNew = id === 'new';
+  const it = isNew ? { id: 'i' + newId(), group: '', name: '', freq: '', times: 1, prep: [], leadDays: null, order: Math.max(0, ...S.items.map(i => i.order || 0)) + 1 } : itemOf(id);
+  if (!it) return notFound();
+  const used = S.events.some(e => e.itemId === it.id);
+  const gl = [...groups().keys()];
+  return topbar(isNew ? '#settings' : `#group/${encodeURIComponent(it.group)}`, isNew ? '새 일정 항목' : '항목 편집') + `
+  <form class="col" data-form="item" data-id="${it.id}" data-new="${isNew ? 1 : ''}" style="gap:14px">
+    <label class="field">그룹 (홈 화면 카드)<input name="group" value="${esc(it.group)}" list="grouplist" required></label>
+    <datalist id="grouplist">${gl.map(g => `<option value="${esc(g)}">`).join('')}</datalist>
+    <label class="field">항목 이름<input name="name" value="${esc(it.name)}" required></label>
+    <div class="row" style="gap:10px">
+      <label class="field grow">주기 표시<input name="freq" value="${esc(it.freq)}" placeholder="예: 연 2회, 봄"></label>
+      <label class="field" style="width:120px">연간 횟수<input name="times" type="number" min="0" max="52" value="${it.times ?? 0}"></label>
+    </div>
+    <div class="sub" style="margin-top:-6px">연간 횟수 0 = 수시 (경조사처럼 정해진 횟수 없음)</div>
+    <label class="field">기본 준비 알림<select name="lead">${LEADS.map(([v, l]) => `<option value="${v ?? ''}" ${v === (it.leadDays ?? null) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+    <label class="field">기본 준비사항 (한 줄에 하나)<textarea name="prep" rows="4">${esc(it.prep.join('\n'))}</textarea></label>
+    <button class="btn primary block" type="submit">저장</button>
+    ${isNew ? '' : (used ? `<div class="sub" style="text-align:center">이 항목에 등록된 일정이 있어 삭제할 수 없습니다.</div>` : `<button class="btn danger block" type="button" data-act="delitem" data-id="${it.id}">항목 삭제</button>`)}
+  </form>`;
+}
+
+/* ---------- 화면: 달력 ---------- */
+const onDate = (e, d) => e.start <= d && d <= (e.end || e.start);
+function viewCal() {
+  const c = S.cal, cur = parse(c.cursor);
+  const modes = [['week', '주'], ['month', '월'], ['year', '연']];
+  let head;
+  if (c.mode === 'year') head = `${cur.getFullYear()}년`;
+  else if (c.mode === 'month') head = `${cur.getFullYear()}년 ${cur.getMonth() + 1}월`;
+  else { const s = addDays(c.cursor, -cur.getDay()); head = `${md(s).split(' ')[0]} – ${md(addDays(s, 6)).split(' ')[0]}`; }
+  let h = `
+  <div class="between" style="margin-bottom:12px">
+    <h1 class="h1" style="font-size:22px">${head}</h1>
+    <div class="row" style="gap:4px">
+      <button class="icon-btn" data-act="cal" data-d="-1" aria-label="이전">${ico.prev}</button>
+      <button class="btn" style="min-height:44px;padding:0 12px" data-act="caltoday">오늘</button>
+      <button class="icon-btn" data-act="cal" data-d="1" aria-label="다음">${ico.next}</button>
+    </div>
+  </div>
+  <div class="seg" role="tablist" aria-label="보기 단위" style="margin-bottom:14px">
+    ${modes.map(([m, l]) => `<button role="tab" aria-selected="${c.mode === m}" class="${c.mode === m ? 'on' : ''}" data-act="calmode" data-m="${m}">${l}</button>`).join('')}
+  </div>`;
+  const t = today();
+  if (c.mode === 'month') {
+    const first = new Date(cur.getFullYear(), cur.getMonth(), 1);
+    const start = addDays(ymd(first), -first.getDay());
+    const last = new Date(cur.getFullYear(), cur.getMonth() + 1, 0);
+    const cells = Math.ceil((first.getDay() + last.getDate()) / 7) * 7;
+    h += `<div class="cal"><div class="dow">${DOW.map((d, i) => `<span class="${i === 0 ? 'sun' : ''}">${d}</span>`).join('')}</div><div class="grid">`;
+    for (let i = 0; i < cells; i++) {
+      const d = addDays(start, i), dd = parse(d);
+      const evs = S.events.filter(e => onDate(e, d)).sort(byStart);
+      h += `<button data-act="selday" data-d="${d}" class="${dd.getMonth() !== cur.getMonth() ? 'out' : ''} ${d === c.sel ? 'sel' : ''} ${d === t ? 'today' : ''}" aria-label="${dd.getMonth() + 1}월 ${dd.getDate()}일 일정 ${evs.length}건">
+        <span class="d ${dd.getDay() === 0 ? 'sun' : ''}">${dd.getDate()}</span>
+        ${evs.slice(0, 2).map(e => `<span class="tag" style="background:${ST[evState(e)][2]}">${esc(itemOf(e.itemId)?.name || e.title)}</span>`).join('')}
+        ${evs.length > 2 ? `<span class="sub" style="font-size:9px">+${evs.length - 2}</span>` : ''}</button>`;
+    }
+    h += `</div></div>`;
+    const selEv = S.events.filter(e => onDate(e, c.sel)).sort(byStart);
+    h += `<h2 class="h2" style="margin:16px 0 10px">${md(c.sel)}</h2>` + (selEv.length ? `<div class="list">${selEv.map(evRow).join('')}</div>` : `<div class="card empty">이 날 일정이 없습니다</div>`);
+    const ms = ymd(first), me = ymd(last);
+    const monthEv = S.events.filter(e => e.start <= me && (e.end || e.start) >= ms).sort(byStart);
+    h += `<h2 class="h2" style="margin:18px 0 10px">이 달의 일정 (${monthEv.length})</h2>` + (monthEv.length ? `<div class="list">${monthEv.map(evRow).join('')}</div>` : `<div class="card empty">이 달에 잡힌 일정이 없습니다</div>`);
+  } else if (c.mode === 'week') {
+    const s = addDays(c.cursor, -cur.getDay());
+    h += `<div class="list">`;
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(s, i), dd = parse(d);
+      const evs = S.events.filter(e => onDate(e, d)).sort(byStart);
+      h += `<div class="card row" style="gap:14px;align-items:flex-start;${d === t ? 'outline:2px solid var(--acc);outline-offset:-2px' : ''}">
+        <div style="width:40px;text-align:center;flex:none"><div class="sub" style="font-size:11px;${i === 0 ? 'color:var(--late)' : ''}">${DOW[i]}</div><div style="font-size:18px;font-weight:700">${dd.getDate()}</div></div>
+        <div class="grow col" style="gap:6px;justify-content:center;min-height:44px">${evs.length ? evs.map(e => `<a href="#event/${e.id}" class="between" style="text-decoration:none;color:var(--ink);min-height:32px"><span class="ellipsis" style="font-size:14px">${esc(e.title)}</span>${chip(evState(e))}</a>`).join('') : '<span class="mute" style="font-size:14px">—</span>'}</div></div>`;
+    }
+    h += `</div>`;
+  } else {
+    const yy = cur.getFullYear(), nowM = new Date().getFullYear() === yy ? new Date().getMonth() : -1;
+    h += `<div class="years">`;
+    for (let m = 0; m < 12; m++) {
+      const ms = `${yy}-${pad(m + 1)}-01`, me = ymd(new Date(yy, m + 1, 0));
+      const evs = S.events.filter(e => e.start <= me && (e.end || e.start) >= ms).sort(byStart);
+      h += `<button data-act="pickmonth" data-m="${m}" class="${m === nowM ? 'now' : ''}" aria-label="${m + 1}월 일정 ${evs.length}건">
+        <span style="font-weight:700">${m + 1}월</span>
+        ${evs.slice(0, 3).map(e => { const k = evState(e); return `<span class="it ${ST[k][1]}">${esc(e.title)}</span>`; }).join('')}
+        ${evs.length > 3 ? `<span class="sub" style="font-size:11px">+${evs.length - 3}</span>` : ''}</button>`;
+    }
+    h += `</div>`;
+  }
+  return h;
+}
+function evRow(e) {
+  return `<a href="#event/${e.id}" class="card row" style="text-decoration:none;color:var(--ink);gap:12px">
+    <span style="width:6px;align-self:stretch;border-radius:3px;background:${ST[evState(e)][2]};flex:none"></span>
+    <span class="grow col" style="gap:2px"><span style="font-weight:600;font-size:14px" class="ellipsis">${esc(e.title)}</span><span class="sub" style="font-size:12px">${span(e)}${e.place ? ' · ' + esc(e.place) : ''}</span></span>${chip(evState(e))}</a>`;
+}
+
+/* ---------- 화면: 기록보관 ---------- */
+function viewRecords() {
+  const q = S.recQ.trim().toLowerCase();
+  const done = S.events.filter(e => e.done).filter(e => !q || [e.title, e.memo, e.place, itemOf(e.itemId)?.group].join(' ').toLowerCase().includes(q)).sort(byStart).reverse();
+  let h = `<h1 class="h1" style="margin-bottom:4px">기록보관</h1><div class="sub" style="margin-bottom:14px">완료 처리한 일정과 그때의 준비·메모 기록</div>
+  <label class="sr" for="recq">기록 검색</label>
+  <input id="recq" data-act="recq" value="${esc(S.recQ)}" placeholder="제목, 메모, 장소로 검색" style="width:100%;border:1px solid var(--line);border-radius:12px;min-height:46px;padding:0 14px;margin-bottom:14px;background:#fff">`;
+  if (!done.length) return h + `<div class="card empty">${q ? '검색 결과가 없습니다' : '아직 기록보관된 일정이 없습니다.<br>일정 상세에서 「완료 후 기록보관」을 누르면 여기에 쌓입니다.'}</div>`;
+  let cy = null;
+  done.forEach(e => {
+    if (yearOf(e) !== cy) { if (cy !== null) h += `</div>`; cy = yearOf(e); h += `<h2 class="h2" style="margin:8px 0 10px">${cy}년</h2><div class="list" style="margin-bottom:10px">`; }
+    h += `<a href="#event/${e.id}" class="card col" style="text-decoration:none;color:var(--ink);gap:4px">
+      <div class="between"><span style="font-weight:600" class="ellipsis">${esc(e.title)}</span><span class="sub" style="font-size:12px;flex:none">${span(e)}</span></div>
+      <div class="sub" style="font-size:12px">${esc(itemOf(e.itemId)?.group || '')} · 준비 ${doneTasks(e)}/${(e.tasks || []).length}${e.place ? ' · ' + esc(e.place) : ''}</div>
+      ${e.memo ? `<div class="sub ellipsis" style="font-size:13px;color:var(--ink)">${esc(e.memo.split('\n')[0])}</div>` : ''}</a>`;
+  });
+  return h + `</div>`;
+}
+
+/* ---------- 화면: 설정 ---------- */
+function viewSettings() {
+  let st;
+  if (!FIREBASE_CONFIG) st = `<div style="font-weight:600">기기 저장 모드</div><div class="sub">이 기기의 브라우저에만 저장됩니다. 다른 기기와 동기화하려면 index.html 맨 위 <b>FIREBASE_CONFIG</b>에 Firebase 설정값을 넣어 주세요.</div>`;
+  else if (S.cloudError) st = `<div style="font-weight:600;color:var(--late)">클라우드 연결 오류</div><div class="sub">${esc(S.cloudError)}</div>`;
+  else if (!S.cloudReady) st = `<div style="font-weight:600">Firebase 연결 중…</div>`;
+  else if (S.user) st = `<div style="font-weight:600">클라우드 동기화 중</div><div class="sub">${esc(S.user.email || S.user.displayName || '')}</div><button class="btn block" style="margin-top:10px" data-act="logout">로그아웃</button>`;
+  else st = `<div style="font-weight:600">로그인 전 (기기 저장 중)</div><div class="sub">로그인하면 이 기기에 있던 내용이 처음 한 번 클라우드로 옮겨집니다.</div><button class="btn primary block" style="margin-top:10px" data-act="login">Google 계정으로 로그인</button>`;
+  let h = `<h1 class="h1" style="margin-bottom:14px">설정</h1>
+  <section class="card col" style="gap:6px;margin-bottom:16px" aria-label="저장 방식">${st}</section>
+  <div class="between" style="margin-bottom:10px"><h2 class="h2" style="margin:0">일정 항목 관리</h2><a href="#item/new" class="btn" style="min-height:40px;display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)">+ 항목 추가</a></div>
+  <div class="card" style="padding:2px 14px;margin-bottom:16px">`;
+  sortedItems().forEach(it => {
+    h += `<a href="#item/${it.id}" class="kv" style="text-decoration:none;color:var(--ink)"><span class="ellipsis"><span class="sub" style="font-size:12px">${esc(it.group)} ›</span> ${esc(it.name)}</span><span class="row sub" style="font-size:12px;flex:none;gap:4px">${esc(leadLabel(it.leadDays))}${ico.next}</span></a>`;
+  });
+  h += `</div>
+  <h2 class="h2" style="margin:0 0 10px">백업</h2>
+  <div class="row" style="gap:10px;margin-bottom:8px">
+    <button class="btn grow" data-act="export">백업 파일 저장</button>
+    <button class="btn grow" data-act="import">백업 불러오기</button>
+  </div>
+  <div class="sub" style="margin-bottom:24px">불러오기는 같은 항목·일정은 덮어쓰고, 없는 것은 추가합니다 (기존 것을 지우지 않음).</div>
+  <div class="sub" style="text-align:center">엘더플래너 v${APP_VERSION}</div>`;
+  return h;
+}
+
+/* ---------- 공통 ---------- */
+function topbar(back, title) {
+  return `<div class="topbar"><a href="${back}" class="icon-btn ghost" aria-label="뒤로">${ico.back}</a><div style="font-weight:600">${title}</div><span style="width:44px"></span></div>`;
+}
+function notFound() { return topbar('#home', '') + `<div class="card empty">찾을 수 없습니다. 삭제되었을 수 있습니다.</div>`; }
+
+function render() {
+  const hash = decodeURIComponent(location.hash.slice(1) || 'home');
+  const [route, arg] = [hash.split('/')[0], hash.split('/').slice(1).join('/')];
+  let html;
+  switch (route) {
+    case 'group': html = viewGroup(arg); break;
+    case 'new': html = viewNew(arg); break;
+    case 'event': html = viewEvent(arg); break;
+    case 'item': html = viewItem(arg); break;
+    case 'cal': html = viewCal(); break;
+    case 'records': html = viewRecords(); break;
+    case 'settings': html = viewSettings(); break;
+    default: html = viewHome();
+  }
+  const tab = ['cal', 'records', 'settings'].includes(route) ? route : 'home';
+  document.querySelectorAll('#tabs a').forEach(a => { const on = a.dataset.tab === tab; a.classList.toggle('on', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  $app.innerHTML = html;
+}
+let lastRoute = '';
+window.addEventListener('hashchange', () => { const r = location.hash.split('/')[0]; if (r !== lastRoute) window.scrollTo(0, 0); lastRoute = r; render(); });
+
+/* ---------- 이벤트 처리 ---------- */
+const curEvent = () => { const m = location.hash.match(/^#event\/(.+)$/); return m ? S.events.find(e => e.id === decodeURIComponent(m[1])) : null; };
+
+$app.addEventListener('click', async ev => {
+  const el = ev.target.closest('[data-act]');
+  if (!el) return;
+  const act = el.dataset.act;
+  const e = curEvent();
+  switch (act) {
+    case 'year': S.year += +el.dataset.d; render(); break;
+    case 'task': {
+      const i = +el.dataset.i; e.tasks[i].done = el.checked; saveEvent(e); break;
+    }
+    case 'deltask': e.tasks.splice(+el.dataset.i, 1); saveEvent(e); break;
+    case 'done': e.done = true; e.doneAt = Date.now(); await saveEvent(e); toast('기록보관했습니다'); break;
+    case 'undone': e.done = false; e.doneAt = null; saveEvent(e); break;
+    case 'delevent':
+      if (confirm('이 일정을 삭제할까요? 메모와 준비 기록도 함께 지워집니다.')) {
+        const it = itemOf(e.itemId); location.hash = it ? '#group/' + encodeURIComponent(it.group) : '#home'; removeEvent(e.id);
+      }
+      break;
+    case 'delitem':
+      if (confirm('이 항목을 삭제할까요?')) { location.hash = '#settings'; removeItem(el.dataset.id); }
+      break;
+    case 'calmode': S.cal.mode = el.dataset.m; render(); break;
+    case 'caltoday': S.cal.cursor = S.cal.sel = today(); render(); break;
+    case 'cal': {
+      const d = +el.dataset.d, c = parse(S.cal.cursor);
+      if (S.cal.mode === 'week') S.cal.cursor = addDays(S.cal.cursor, 7 * d);
+      else if (S.cal.mode === 'month') S.cal.cursor = ymd(new Date(c.getFullYear(), c.getMonth() + d, 1));
+      else S.cal.cursor = ymd(new Date(c.getFullYear() + d, 0, 1));
+      render(); break;
+    }
+    case 'selday': S.cal.sel = el.dataset.d; render(); break;
+    case 'pickmonth': { const c = parse(S.cal.cursor); S.cal.cursor = S.cal.sel = ymd(new Date(c.getFullYear(), +el.dataset.m, 1)); S.cal.mode = 'month'; render(); break; }
+    case 'login': login(); break;
+    case 'logout': Cloud.api.Au.signOut(Cloud.api.auth); break;
+    case 'export': exportJSON(); break;
+    case 'import': document.getElementById('importFile').click(); break;
+  }
+});
+
+$app.addEventListener('change', ev => {
+  const el = ev.target, f = el.dataset.f;
+  if (!f) return;
+  const e = curEvent(); if (!e) return;
+  let v = el.value;
+  if (f === 'title' && !v.trim()) { el.value = e.title; return; }
+  if (f === 'start' && !v) { el.value = e.start; return; }
+  if (f === 'end' && v && v < e.start) { toast('종료일이 시작일보다 빠릅니다'); el.value = e.end || ''; return; }
+  if (f === 'leadDays') v = v === '' ? null : +v;
+  e[f] = v;
+  if (f === 'start' && e.end && e.end < v) e.end = '';
+  saveEvent(e, ['start', 'end', 'leadDays'].includes(f));
+});
+
+$app.addEventListener('input', ev => {
+  if (ev.target.dataset.act === 'recq') {
+    S.recQ = ev.target.value;
+    const pos = ev.target.selectionStart;
+    render();
+    const n = document.getElementById('recq'); n.focus(); n.setSelectionRange(pos, pos);
+  }
+});
+
+$app.addEventListener('submit', ev => {
+  ev.preventDefault();
+  const form = ev.target, fd = new FormData(form);
+  const kind = form.dataset.form;
+  if (kind === 'new') {
+    const it = itemOf(form.dataset.item);
+    const start = fd.get('start'), end = fd.get('end');
+    if (end && end < start) { toast('종료일이 시작일보다 빠릅니다'); return; }
+    const lead = fd.get('lead');
+    const e = {
+      id: 'e' + newId(), itemId: it.id, title: fd.get('title').trim() || it.name, start, end: end || '',
+      place: fd.get('place').trim(), leadDays: lead === '' ? null : +lead,
+      tasks: it.prep.map(t => ({ t, done: false })), memo: '', done: false, doneAt: null, created: Date.now()
+    };
+    S.year = yearOf(e);
+    location.hash = '#event/' + e.id;
+    saveEvent(e);
+    renumber(it, yearOf(e));
+  } else if (kind === 'task') {
+    const t = fd.get('t').trim(); if (!t) return;
+    const e = curEvent(); e.tasks = e.tasks || []; e.tasks.push({ t, done: false }); saveEvent(e);
+    setTimeout(() => document.getElementById('newtask')?.focus(), 0);
+  } else if (kind === 'item') {
+    const id = form.dataset.id;
+    const old = itemOf(id) || { order: Math.max(0, ...S.items.map(i => i.order || 0)) + 1 };
+    const lead = fd.get('lead');
+    const it = {
+      ...old, id, group: fd.get('group').trim(), name: fd.get('name').trim(), freq: fd.get('freq').trim(),
+      times: Math.max(0, parseInt(fd.get('times'), 10) || 0), leadDays: lead === '' ? null : +lead,
+      prep: fd.get('prep').split('\n').map(s => s.trim()).filter(Boolean)
+    };
+    location.hash = '#group/' + encodeURIComponent(it.group);
+    saveItem(it); toast('저장했습니다');
+  }
+});
+
+/* 자동 제목(예: 순회방문 2차)인 일정만 그해 날짜 순서대로 차수를 다시 매김. 직접 바꾼 제목은 건드리지 않음 */
+function renumber(it, year) {
+  if (!(it.times > 1)) return;
+  const re = new RegExp('^' + it.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ' \\d+차$');
+  eventsOf(it.id, year).forEach((x, i) => {
+    const t = `${it.name} ${i + 1}차`;
+    if (re.test(x.title) && x.title !== t) { x.title = t; saveEvent(x); }
+  });
+}
+
+/* ---------- 백업 ---------- */
+function exportJSON() {
+  const data = { app: 'elder-planner', version: APP_VERSION, exported: new Date().toISOString(), items: S.items, events: S.events };
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  const a = document.createElement('a'); a.href = url; a.download = `엘더플래너_백업_${today()}.json`; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+document.getElementById('importFile').addEventListener('change', async ev => {
+  const file = ev.target.files[0]; ev.target.value = '';
+  if (!file) return;
+  try {
+    const d = JSON.parse(await file.text());
+    if (d.app !== 'elder-planner' || !Array.isArray(d.items) || !Array.isArray(d.events)) throw new Error('엘더플래너 백업 파일이 아닙니다');
+    if (!confirm(`항목 ${d.items.length}개, 일정 ${d.events.length}건을 불러올까요?`)) return;
+    d.items.forEach(i => upsert(S.items, i)); d.events.forEach(e => upsert(S.events, e));
+    render();
+    if (backend === Local) Local.persist();
+    else { for (const i of d.items) await Cloud.putItem(i); for (const e of d.events) await Cloud.putEvent(e); }
+    toast('불러오기 완료');
+  } catch (err) { toast('불러오기 실패: ' + err.message); }
+});
+
+/* ---------- 시작 ---------- */
+Local.load();
+lastRoute = location.hash.split('/')[0];
+render();
+if (FIREBASE_CONFIG) startCloud();
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>

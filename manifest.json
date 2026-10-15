@@ -1,0 +1,15 @@
+{
+  "name": "엘더플래너",
+  "short_name": "엘더플래너",
+  "description": "장로 연간 주요 일정 준비·체크·기록보관",
+  "lang": "ko",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2F4F6",
+  "theme_color": "#1B2430",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
