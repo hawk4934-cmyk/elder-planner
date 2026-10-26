@@ -1,7 +1,7 @@
 {
   "name": "엘더플래너",
   "short_name": "엘더플래너",
-  "description": "장로 연간 주요 일정 준비·체크·기록보관",
+  "description": "개인 일정과 회중 일정을 한 달력에서",
   "lang": "ko",
   "start_url": "./index.html#home",
   "scope": "./",

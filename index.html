@@ -23,24 +23,29 @@ html,body{margin:0;background:var(--bg)}
 body{font-family:'IBM Plex Sans KR',system-ui,-apple-system,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;font-size:15px}
 button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 a{color:var(--acc)}
-#app{max-width:560px;margin:0 auto;padding:18px 16px calc(96px + env(safe-area-inset-bottom))}
+[hidden]{display:none!important}
+#app{max-width:560px;margin:0 auto;padding:18px 16px calc(100px + env(safe-area-inset-bottom))}
 .row{display:flex;align-items:center;gap:10px}
 .between{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .col{display:flex;flex-direction:column;gap:10px}
+.grow{flex:1 1 auto;min-width:0}
 .eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--acc)}
-.h1{font-size:26px;font-weight:700;margin:0}
-.h2{font-size:17px;font-weight:700;margin:6px 0 0}
+.h1{font-size:24px;font-weight:700;margin:0}
+.h2{font-size:17px;font-weight:700;margin:18px 0 10px}
 .sub{font-size:13px;color:var(--sub)}
 .mute{color:var(--mute)}
 .card{background:var(--card);border-radius:16px;padding:14px}
 .list{display:flex;flex-direction:column;gap:10px}
-.icon-btn{width:44px;height:44px;border:none;border-radius:12px;background:var(--card);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);flex:none}
+.ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:44px;height:44px;border:none;border-radius:12px;background:var(--card);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);flex:none;text-decoration:none}
 .icon-btn.ghost{background:transparent}
-.btn{min-height:48px;border-radius:14px;border:1px solid #C3CAD2;background:#fff;font-weight:600;padding:0 16px;cursor:pointer}
+.btn{min-height:48px;border-radius:14px;border:1px solid #C3CAD2;background:#fff;font-weight:600;padding:0 16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink)}
 .btn.primary{background:var(--acc);border-color:var(--acc);color:#fff}
 .btn.danger{color:var(--late);border-color:#E6B8B0}
 .btn.block{width:100%}
+.btn.small{min-height:40px;font-size:14px;padding:0 12px}
 .btn.dash{border-style:dashed;color:var(--sub);background:transparent;font-weight:500}
+.btn:disabled{opacity:.5}
 .chip{display:inline-block;font-size:12px;font-weight:600;padding:3px 8px;border-radius:8px;white-space:nowrap}
 .st-none{background:var(--soft);color:var(--sub)} .st-set{background:var(--acc-l);color:var(--acc-d)}
 .st-prep{background:var(--warn-l);color:var(--warn-d)} .st-done{background:var(--ok-l);color:var(--ok-d)}
@@ -49,118 +54,154 @@ a{color:var(--acc)}
 .bar>i{display:block;height:4px;border-radius:4px}
 .dark{background:var(--ink);color:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .dark .sub{color:#C9D3DD}
+.dark a{color:#fff;text-decoration:none}
 .dday{width:56px;flex:none;text-align:center;border-radius:12px;padding:6px 0;background:var(--warn)}
 .dday.late{background:var(--late)} .dday.soft{background:#33404F}
-.dday small{display:block;font-size:11px} .dday b{font-size:16px}
-.grp{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink)}
+.dday small{display:block;font-size:11px} .dday b{font-size:15px}
 .num{width:36px;height:36px;flex:none;border-radius:10px;background:var(--acc-l);color:var(--acc);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.grow{flex:1 1 auto;min-width:0}
 .field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--sub)}
-.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;min-height:46px;color:var(--ink);font-size:15px;width:100%}
+.field input,.field select,.field textarea,.inp{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;min-height:46px;color:var(--ink);font-size:15px;width:100%}
 textarea{resize:vertical}
 .kv{display:flex;justify-content:space-between;align-items:center;min-height:48px;border-bottom:1px solid var(--soft);gap:10px}
 .kv:last-child{border-bottom:none}
-.kv input,.kv select{border:none;background:transparent;text-align:right;font-weight:600;min-height:44px;font-size:15px;max-width:60%;color:var(--ink)}
-.task{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 4px;border-bottom:1px solid var(--soft)}
-.task:last-child{border-bottom:none}
-.task input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc);margin:0;flex:none}
-.task.done span{color:#9AA3AE;text-decoration:line-through}
-.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:#E3E7EB;border-radius:14px;padding:4px}
-.seg button{min-height:40px;border:none;border-radius:10px;background:transparent;color:var(--sub);font-weight:600;cursor:pointer}
-.seg button.on{background:#fff;color:var(--ink)}
+.kv input,.kv select{border:none;background:transparent;text-align:right;font-weight:600;min-height:44px;font-size:15px;max-width:64%;color:var(--ink)}
+.kv select{text-align-last:right}
+.line{display:flex;align-items:center;gap:8px;min-height:50px;border-bottom:1px solid var(--soft)}
+.line:last-child{border-bottom:none}
+.line input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc);margin:0 4px;flex:none}
+.line input.t{flex:1;min-width:0;border:none;background:transparent;min-height:44px;font-size:15px;padding:0 4px}
+.line input.tm{width:70px;flex:none;border:1px solid var(--line);border-radius:10px;min-height:40px;padding:0 8px;text-align:center}
+.line.done input.t{color:#9AA3AE;text-decoration:line-through}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px;background:#E3E7EB;border-radius:14px;padding:4px}
+.seg button,.seg a{min-height:40px;border:none;border-radius:10px;background:transparent;color:var(--sub);font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px}
+.seg .on{background:#fff;color:var(--ink)}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{min-height:36px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:#fff;font-weight:600;color:var(--sub);cursor:pointer;font-size:13px}
+.fchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .cal{background:#fff;border-radius:18px;padding:10px 6px 8px}
 .cal .dow,.cal .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
 .cal .dow{text-align:center;font-size:11px;color:var(--mute);padding-bottom:4px}
-.cal .grid button{min-height:60px;border:none;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 1px;cursor:pointer;border-radius:10px}
+.cal .grid button{min-height:64px;border:none;background:transparent;display:flex;flex-direction:column;align-items:stretch;gap:2px;padding:4px 1px;cursor:pointer;border-radius:10px}
 .cal .grid button.out{opacity:.35}
 .cal .grid button.sel{outline:2px solid var(--acc);outline-offset:-2px}
-.cal .grid button.today .d{background:var(--ink);color:#fff;border-radius:99px;padding:0 6px}
-.cal .d{font-size:13px}
-.cal .sun{color:var(--late)}
-.cal .tag{font-size:9px;line-height:1.3;color:#fff;padding:1px 3px;border-radius:4px;max-width:100%;overflow:hidden;white-space:nowrap}
+.cal .d{font-size:13px;text-align:center}
+.cal .today .d span{background:var(--ink);color:#fff;border-radius:99px;padding:0 6px}
+.sun{color:var(--late)}
+.tag{font-size:9px;line-height:1.35;padding:1px 3px;border-radius:4px;overflow:hidden;white-space:nowrap;text-overflow:clip}
 .years{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .years button{background:#fff;border:none;border-radius:14px;padding:10px;min-height:96px;display:flex;flex-direction:column;gap:5px;align-items:stretch;text-align:left;cursor:pointer}
 .years button.now{outline:2px solid var(--acc);outline-offset:-2px}
-.years .it{font-size:11px;line-height:1.3;border-radius:6px;padding:2px 5px}
+.years .it{font-size:11px;line-height:1.3;border-radius:6px;padding:2px 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.evrow{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink)}
+.evrow .bar6{width:6px;align-self:stretch;border-radius:3px;flex:none}
+.done-t{color:#9AA3AE;text-decoration:line-through}
 nav#tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:6px 4px calc(10px + env(safe-area-inset-bottom));z-index:10}
-nav#tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
-nav#tabs a{min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--mute);font-size:11px}
+nav#tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+nav#tabs a{position:relative;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--mute);font-size:11px}
 nav#tabs a.on{color:var(--acc);font-weight:600}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin:-6px -6px 6px}
-.empty{text-align:center;color:var(--mute);padding:22px 10px;font-size:14px}
+nav#tabs .dot{position:absolute;top:6px;right:calc(50% - 16px);width:8px;height:8px;border-radius:99px;background:var(--late)}
+.fab{position:fixed;right:max(16px,calc(50% - 264px));bottom:calc(86px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:18px;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(27,36,48,.22);z-index:9}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin:-6px -6px 8px}
+.empty{text-align:center;color:var(--mute);padding:22px 10px;font-size:14px;line-height:1.6}
+.login{min-height:80vh;display:flex;flex-direction:column;justify-content:center;gap:16px;text-align:center}
+.progress{height:8px;border-radius:8px;background:#E6EAEE;overflow:hidden}
+.progress>i{display:block;height:8px;background:var(--acc)}
 #toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;max-width:90vw}
 #toast.show{opacity:1}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.migrow{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid var(--soft)}
+.migrow:last-child{border-bottom:none}
+.migrow select{border:1px solid var(--line);border-radius:10px;min-height:44px;padding:0 8px;background:#fff;width:100%}
+.migrow.c select{border-color:var(--acc);background:var(--acc-l)}
 </style>
 </head>
 <body>
 <main id="app" aria-live="polite"></main>
-<nav id="tabs" aria-label="주 메뉴"><div class="in">
-  <a href="#home" data-tab="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>홈</a>
-  <a href="#cal" data-tab="cal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>달력</a>
-  <a href="#records" data-tab="records"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h6"/></svg>기록보관</a>
+<nav id="tabs" aria-label="주 메뉴" hidden><div class="in">
+  <a href="#home" data-tab="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>달력</a>
+  <a href="#today" data-tab="today"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>오늘<span class="dot" id="todayDot" hidden></span></a>
+  <a href="#cong" data-tab="cong"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10l8-6 8 6v10z"/><path d="M9 20v-6h6v6"/></svg>회중</a>
+  <a href="#memo" data-tab="memo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h6"/></svg>메모</a>
   <a href="#settings" data-tab="settings"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>설정</a>
 </div></nav>
 <div id="toast" role="status"></div>
-<input type="file" id="importFile" accept="application/json" class="sr" aria-label="백업 파일 선택">
+<input type="file" id="importFile" accept="application/json,.json" class="sr" aria-label="백업 파일 선택">
 
 <script type="module">
-/* =========================================================
-   엘더플래너 v0.1
-   - FIREBASE_CONFIG 가 비어 있으면 '기기 저장' 모드로 동작
-   - 값을 넣으면 Google 로그인 후 Firestore 에 동기화
-     (경로: planners/{plannerId}/items, planners/{plannerId}/events)
-   - plannerId 문서의 members 배열에 uid 를 추가하면 나중에 공유 가능
-   ========================================================= */
-const FIREBASE_CONFIG = null;
-/* 예시 — Firebase 콘솔 > 프로젝트 설정 > 웹 앱 에서 복사
+/* =====================================================================
+   엘더플래너 (개인 + 회중 통합 플래너)  v1.0
+   저장 구조 (Firestore, 프로젝트 k-planner-ef6e3)
+     users/{uid}                 프로필, 개인 구분(categories), 가져오기 기록
+     users/{uid}/events/{id}     개인 일정
+     users/{uid}/todos/{날짜}     날짜별 할 일
+     users/{uid}/memos/{id}      중요 메모
+     planners/{pid}              회중 플래너 (owner, members) — 지금은 pid = 내 uid
+     planners/{pid}/items/{id}   회중 주요 일정 항목
+     planners/{pid}/events/{id}  회중 일정
+   기존 k-planner 데이터(planner/meta, planner/user_*)는 설정 › 기존 데이터 가져오기에서 읽기만 함
+   ===================================================================== */
+const APP_NAME = '엘더플래너';
+const APP_VERSION = '1.0';
 const FIREBASE_CONFIG = {
-  apiKey: "...", authDomain: "...", projectId: "...",
-  storageBucket: "...", messagingSenderId: "...", appId: "..."
+  apiKey: "AIzaSyBaC3DnqbtLg3paTndvFn6APGkeZhybG8A",
+  authDomain: "k-planner-ef6e3.firebaseapp.com",
+  projectId: "k-planner-ef6e3",
+  storageBucket: "k-planner-ef6e3.firebasestorage.app",
+  messagingSenderId: "1028952362388",
+  appId: "1:1028952362388:web:376340980b3c22f7dd5381"
 };
-*/
-const APP_VERSION = '0.1';
 
-/* ---------- 기본 일정 항목 (첨부 표 기준) ----------
-   [그룹, [[항목명, 주기표시, 연간횟수(0=수시), 준비사항[], 알림(일 전, null=직접설정)]] ] */
-const SEED = [
-  ['특별강연', [['특별강연', '봄 · 가을', 2, ['연사'], 90]]],
-  ['주의만찬 기념식', [['주의만찬 기념식', '봄', 1, ['장소', '연사 및 진행'], 90]]],
-  ['순회방문', [['순회방문', '연 2회', 2, ['서류', '일정계획표', '회중광고'], 30]]],
-  ['대회', [
-    ['순회대회', '연 2회', 2, ['서류', '일정계획표', '회중광고'], 60],
-    ['순회대회 P모임', '연 1회', 1, [], null],
-    ['지역대회', '', 1, ['서류', '일정계획표', '회중광고'], null],
-    ['국제대회', '해당 시', 0, ['신청접수 (서기)'], null],
-    ['특별모임', '해당 시', 0, ['회중광고'], null]]],
-  ['특별활동', [['특별활동 (봉사감독자)', '', 1, ['기간 및 내용'], null]]],
-  ['장로모임', [
-    ['정기장로모임', '연 4회', 4, ['회의록 (의제)'], null],
-    ['간이 장로모임', '2회', 2, ['회의록 (의제)'], null]]],
-  ['정기파이오니아 모임', [['정기파이오니아 모임', '연말연초', 1, ['회중광고', '연사'], null]]],
-  ['신권학교', [
-    ['장로학교', '', 1, ['일정확인'], null],
-    ['왕국전도학교', '', 1, ['일정확인'], null],
-    ['파이오니아학교', '', 1, ['일정확인 (해당P)', '식사'], null]]],
-  ['회중경조사', [
-    ['결혼', '수시', 0, ['광고'], null],
-    ['장례', '수시', 0, ['회중광고', '장례식 준비'], null]]],
-  ['기타 행사', [['야유회', '', 1, ['진행', '장소 섭외'], null]]]
+/* ---------- 색상 ---------- */
+const CAT_COLORS = ['#3B6D11', '#185FA5', '#993C1D', '#534AB7', '#854F0B', '#A32D2D', '#0F6E56'];
+const CAT_BG = ['#EAF3DE', '#E6F1FB', '#FAECE7', '#EDEAFB', '#FBF0E0', '#FBE7E7', '#E3F5F0'];
+const CONG = { bg: '#1F5E6B', fg: '#FFFFFF', bar: '#1F5E6B' };
+const DEFAULT_CATS = ['집회', '행사', '회의', '교육', '봉사', '기타'];
+
+/* ---------- 회중 주요 일정 항목 기본값 ----------
+   [id, 그룹, 이름, 주기표시, 봉사연도 횟수(0=수시), 칸 나누기(half|season|null), 준비사항, 알림(일 전)] */
+const SEED_ITEMS = [
+  ['lecture', '특별강연', '특별강연', '가을 · 봄', 2, 'season', ['연사'], 90],
+  ['memorial', '주의만찬 기념식', '주의만찬 기념식', '봄', 1, null, ['장소', '연사 및 진행'], 90],
+  ['visit', '순회방문', '순회방문', '상반기 · 하반기', 2, 'half', ['서류', '일정계획표', '회중광고'], 30],
+  ['ca', '대회', '순회대회', '연 2회', 2, null, ['서류', '일정계획표', '회중광고'], 60],
+  ['cap', '대회', '순회대회 P모임', '연 1회', 1, null, [], null],
+  ['rc', '대회', '지역대회', '', 1, null, ['서류', '일정계획표', '회중광고'], null],
+  ['ic', '대회', '국제대회', '해당 시', 0, null, ['신청접수 (서기)'], null],
+  ['sp', '대회', '특별모임', '해당 시', 0, null, ['회중광고'], null],
+  ['coact', '특별활동', '특별활동 (봉사감독자)', '', 1, null, ['기간 및 내용'], null],
+  ['em', '장로모임', '정기장로모임', '연 4회', 4, null, ['회의록 (의제)'], null],
+  ['em2', '장로모임', '간이 장로모임', '2회', 2, null, ['회의록 (의제)'], null],
+  ['pm', '정기파이오니아 모임', '정기파이오니아 모임', '연말연초', 1, null, ['회중광고', '연사'], null],
+  ['es', '신권학교', '장로학교', '', 1, null, ['일정확인'], null],
+  ['ks', '신권학교', '왕국전도학교', '', 1, null, ['일정확인'], null],
+  ['ps', '신권학교', '파이오니아학교', '', 1, null, ['일정확인 (해당P)', '식사'], null],
+  ['wed', '회중경조사', '결혼', '수시', 0, null, ['광고'], null],
+  ['fun', '회중경조사', '장례', '수시', 0, null, ['회중광고', '장례식 준비'], null],
+  ['picnic', '기타 행사', '야유회', '', 1, null, ['진행', '장소 섭외'], null],
+  ['unc', '미분류', '미분류 회중 일정', '', 0, null, [], null]
 ];
-function seedItems() {
-  const out = []; let n = 0;
-  SEED.forEach(([group, items]) => items.forEach(([name, freq, times, prep, leadDays]) => {
-    n++; out.push({ id: 'i' + String(n).padStart(2, '0'), group, name, freq, times, prep, leadDays, order: n });
-  }));
-  return out;
+const seedItemObjs = () => SEED_ITEMS.map(([id, group, name, freq, times, slotType, prep, leadDays], i) => ({ id, group, name, freq, times, slotType, prep, leadDays, order: i + 1 }));
+/* 엘더플래너 v0.1 백업의 항목 id → 새 항목 id */
+const ELDER_MAP = { i01: 'lecture', i02: 'memorial', i03: 'visit', i04: 'ca', i05: 'cap', i06: 'rc', i07: 'ic', i08: 'sp', i09: 'coact', i10: 'em', i11: 'em2', i12: 'pm', i13: 'es', i14: 'ks', i15: 'ps', i16: 'wed', i17: 'fun', i18: 'picnic' };
+/* 기존 일정 자동 분류: 제목(띄어쓰기 무시)에 들어 있는 낱말 → 회중 항목 */
+const RULES = [
+  [/순회방문|순회감독자/, 'visit'], [/특별강연/, 'lecture'], [/기념식|주의만찬/, 'memorial'],
+  [/순회대회.*P|P모임/, 'cap'], [/순회대회/, 'ca'], [/지역대회/, 'rc'], [/국제대회/, 'ic'], [/특별모임/, 'sp'],
+  [/파이오니아학교/, 'ps'], [/왕국전도학교/, 'ks'], [/장로학교/, 'es'],
+  [/간이.*장로모임/, 'em2'], [/장로모임/, 'em'], [/파이오니아모임/, 'pm'],
+  [/봉사감독자|특별활동/, 'coact'], [/결혼/, 'wed'], [/장례/, 'fun'], [/야유회/, 'picnic']
+];
+function classify(ev) {
+  const t = (ev.title || '').replace(/\s+/g, '');
+  for (const [re, id] of RULES) if (re.test(t)) return itemOf(id) ? id : 'unc';
+  if (['집회', '회의', '교육'].includes(ev.cat)) return 'unc';
+  return 'p';
 }
-const LEADS = [[null, '직접 설정 안 함'], [7, '1주 전'], [14, '2주 전'], [30, '1달 전'], [60, '2달 전'], [90, '3달 전']];
+const LEADS = [[null, '알림 없음'], [7, '1주 전'], [14, '2주 전'], [30, '1달 전'], [60, '2달 전'], [90, '3달 전']];
 const leadLabel = v => (LEADS.find(l => l[0] === (v ?? null)) || [null, v + '일 전'])[1];
+const leadOptions = sel => LEADS.map(([v, l]) => `<option value="${v ?? ''}" ${v === (sel ?? null) ? 'selected' : ''}>${l}</option>`).join('');
 
-/* ---------- 유틸 ---------- */
-const $app = document.getElementById('app');
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+/* ---------- 날짜 · 봉사연도 ---------- */
 const pad = n => String(n).padStart(2, '0');
 const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
@@ -169,44 +210,70 @@ const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); retu
 const diffDays = (a, b) => Math.round((parse(a) - parse(b)) / 86400000);
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 const md = s => { if (!s) return ''; const d = parse(s); return `${d.getMonth() + 1}.${pad(d.getDate())} (${DOW[d.getDay()]})`; };
-const span = e => e.end && e.end !== e.start ? `${md(e.start)} – ${md(e.end)}` : md(e.start);
-const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const mdShort = s => { const d = parse(s); return `${d.getMonth() + 1}.${pad(d.getDate())}`; };
+const span = e => e.end && e.end > e.start ? `${md(e.start)} – ${md(e.end)}` : md(e.start);
+const endOf = e => e.end && e.end > e.start ? e.end : e.start;
+const onDate = (e, d) => e.start <= d && d <= endOf(e);
+const syOf = s => { const y = +s.slice(0, 4), m = +s.slice(5, 7); return m >= 9 ? y + 1 : y; };   // 봉사연도: 끝나는 해 이름
+const halfOf = s => { const m = +s.slice(5, 7); return (m >= 9 || m <= 3) ? '상반기' : '하반기'; };  // 상반기 9~3월, 하반기 4~8월
+const seasonOf = s => { const m = +s.slice(5, 7); return (m >= 9 || m <= 2) ? '가을' : '봄'; };    // 가을 9~2월, 봄 3~8월
+const SLOTS = { half: ['상반기', '하반기'], season: ['가을', '봄'] };
+const SLOT_HINT = { 상반기: '9월~3월', 하반기: '4월~8월', 가을: '9월~2월', 봄: '3월~8월' };
+const slotByDate = (type, s) => type === 'half' ? halfOf(s) : seasonOf(s);
+
+/* ---------- 유틸 ---------- */
+const $app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const rx = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 const byStart = (a, b) => (a.start || '').localeCompare(b.start || '');
 const upsert = (arr, x) => { const i = arr.findIndex(y => y.id === x.id); if (i < 0) arr.push(x); else arr[i] = x; };
+const clean = o => JSON.parse(JSON.stringify(o));
 const ico = {
   back: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   next: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   prev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
-  plus: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+  plus: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
   x: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-  edit: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>'
+  edit: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+  note: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h4"/></svg>',
+  doc: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>'
 };
 let toastT;
-function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 
 /* ---------- 상태 ---------- */
 const S = {
-  items: [], events: [],
-  year: new Date().getFullYear(),
-  cal: { mode: 'month', cursor: today(), sel: today() },
-  recQ: '', mode: 'local', user: null, cloudReady: false, cloudError: ''
+  phase: 'boot', err: '', user: null, uid: null, pid: null,
+  profile: {}, pev: [], cev: [], items: [], todos: {}, memos: [],
+  cal: { mode: 'month', cursor: today(), sel: today(), filter: 'all' },
+  sy: syOf(today()), recQ: '', todoDate: today(), openNote: null, mig: null
 };
+const allEv = () => S.pev.concat(S.cev);
+const cats = () => (S.profile.categories && S.profile.categories.length) ? S.profile.categories : DEFAULT_CATS;
+function catStyle(cat) { const i = cats().indexOf(cat); return i < 0 ? { bg: '#EEF0F2', fg: '#5A6573', bar: '#9AA3AE' } : { bg: CAT_BG[i % 7], fg: CAT_COLORS[i % 7], bar: CAT_COLORS[i % 7] }; }
+const chipStyle = e => e.area === 'c' ? CONG : catStyle(e.cat);
 const itemOf = id => S.items.find(i => i.id === id);
 const sortedItems = () => [...S.items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const congOf = (itemId, sy) => S.cev.filter(e => e.itemId === itemId && (!sy || syOf(e.start) === sy)).sort(byStart);
+function slotOf(e) { const it = itemOf(e.itemId); if (!it || !it.slotType) return null; if (it.slotType === 'season' && e.slot) return e.slot; return slotByDate(it.slotType, e.start); }
+const leadOf = e => e.leadDays !== undefined ? e.leadDays : (itemOf(e.itemId)?.leadDays ?? null);
+const alertDate = e => { if (e.area !== 'c') return null; const l = leadOf(e); return l ? addDays(e.start, -l) : null; };
+const doneCount = e => (e.checklist || []).filter(t => t.done).length;
+const classLabel = e => e.area === 'c' ? (itemOf(e.itemId)?.name || '회중') : (e.cat || '개인');
 function groups() {
   const m = new Map();
-  sortedItems().forEach(i => { if (!m.has(i.group)) m.set(i.group, []); m.get(i.group).push(i); });
+  sortedItems().forEach(i => {
+    if (i.id === 'unc' && !S.cev.some(e => e.itemId === 'unc')) return;
+    if (!m.has(i.group)) m.set(i.group, []);
+    m.get(i.group).push(i);
+  });
   return m;
 }
-const yearOf = e => +String(e.start).slice(0, 4);
-const eventsOf = (itemId, year) => S.events.filter(e => e.itemId === itemId && (!year || yearOf(e) === year)).sort(byStart);
-const leadOf = e => e.leadDays !== undefined ? e.leadDays : (itemOf(e.itemId)?.leadDays ?? null);
-const alertDate = e => { const l = leadOf(e); return l ? addDays(e.start, -l) : null; };
-const doneTasks = e => (e.tasks || []).filter(t => t.done).length;
 function evState(e) {
   if (e.done) return 'done';
   const t = today();
-  if ((e.end || e.start) < t) return 'late';
+  if (endOf(e) < t) return 'late';
   const a = alertDate(e);
   if ((a && a <= t) || diffDays(e.start, t) <= 14) return 'prep';
   return 'set';
@@ -217,534 +284,998 @@ const ST = {
 };
 const chip = k => `<span class="chip ${ST[k][1]}">${ST[k][0]}</span>`;
 
-/* ---------- 저장소: 기기 저장 ---------- */
-const LS_KEY = 'elderplanner.v1';
-function readLocal() { try { return JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch (e) { return null; } }
-const Local = {
-  load() {
-    const d = readLocal();
-    S.items = d?.items?.length ? d.items : seedItems();
-    S.events = d?.events || [];
-    if (!d) this.persist();
-  },
-  persist() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ items: S.items, events: S.events })); }
-    catch (e) { toast('기기 저장에 실패했습니다'); }
-  },
-  async putEvent() { this.persist(); }, async delEvent() { this.persist(); },
-  async putItem() { this.persist(); }, async delItem() { this.persist(); }
-};
-
-/* ---------- 저장소: Firebase ---------- */
-const Cloud = {
-  api: null, pid: null, unsubs: [],
-  ref(col, id) { const { F, db } = this.api; return F.doc(db, 'planners', this.pid, col, id); },
-  clean: o => JSON.parse(JSON.stringify(o)),
-  async putEvent(e) { await this.api.F.setDoc(this.ref('events', e.id), this.clean(e)); },
-  async delEvent(id) { await this.api.F.deleteDoc(this.ref('events', id)); },
-  async putItem(i) { await this.api.F.setDoc(this.ref('items', i.id), this.clean(i)); },
-  async delItem(id) { await this.api.F.deleteDoc(this.ref('items', id)); }
-};
-let backend = Local;
-
-async function startCloud() {
+/* ---------- Firebase ---------- */
+let A, Au, F, auth, db;
+const unsubs = [];
+async function loadSDK() {
+  if (window.__FB_MOCK__) return window.__FB_MOCK__;   // 점검용 모의 객체 (실사용 시 없음)
   const base = 'https://www.gstatic.com/firebasejs/10.12.2/';
+  const [a, au, f] = await Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]);
+  return { A: a, Au: au, F: f };
+}
+async function boot() {
   try {
-    const [A, Au, F] = await Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]);
+    ({ A, Au, F } = await loadSDK());
     const app = A.initializeApp(FIREBASE_CONFIG);
-    const auth = Au.getAuth(app);
-    let db;
+    auth = Au.getAuth(app);
     try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache() }); } catch (e) { db = F.getFirestore(app); }
-    Cloud.api = { A, Au, F, auth, db };
-    S.cloudReady = true;
-    Au.onAuthStateChanged(auth, user => onUser(user).catch(err => { S.cloudError = err.message; render(); }));
-    render();
+    Au.getRedirectResult(auth).catch(e => toast('로그인 실패: ' + (e.code || e.message)));
+    Au.onAuthStateChanged(auth, u => onUser(u).catch(err => { S.phase = 'error'; S.err = err.code || err.message; render(); }));
   } catch (err) {
-    S.cloudError = 'Firebase를 불러오지 못했습니다: ' + err.message;
-    render();
+    S.phase = 'error'; S.err = 'Firebase를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요. (' + err.message + ')'; render();
   }
 }
-async function onUser(user) {
-  const { F, db } = Cloud.api;
-  Cloud.unsubs.forEach(u => u()); Cloud.unsubs = [];
-  S.user = user;
-  if (!user) { backend = Local; S.mode = 'local'; Local.load(); render(); return; }
-  backend = Cloud; S.mode = 'cloud';
-  Cloud.pid = user.uid;
-  const pref = F.doc(db, 'planners', Cloud.pid);
-  const snap = await F.getDoc(pref);
-  if (!snap.exists()) {
-    await F.setDoc(pref, { owner: user.uid, members: [user.uid], name: '엘더플래너', created: Date.now() });
+const uref = (...p) => F.doc(db, 'users', S.uid, ...p);
+const ucol = (...p) => F.collection(db, 'users', S.uid, ...p);
+const pref = (...p) => F.doc(db, 'planners', S.pid, ...p);
+const pcol = (...p) => F.collection(db, 'planners', S.pid, ...p);
+const evRef = e => e.area === 'c' ? pref('events', e.id) : uref('events', e.id);
+
+async function onUser(u) {
+  unsubs.splice(0).forEach(f => f());
+  S.user = u;
+  if (!u) {
+    Object.assign(S, { phase: 'login', uid: null, pid: null, profile: {}, pev: [], cev: [], items: [], todos: {}, memos: [], mig: null });
+    render(); return;
   }
+  S.phase = 'loading'; render();
+  S.uid = u.uid; S.pid = u.uid;
+  F.setDoc(uref(), { name: u.displayName || '', email: u.email || '', lastLogin: Date.now() }, { merge: true }).catch(() => {});
+  try {
+    const ps = await F.getDoc(pref());
+    if (!ps.exists()) await F.setDoc(pref(), { owner: u.uid, members: [u.uid], name: '회중 일정', created: Date.now() });
+  } catch (e) { if (e.code === 'permission-denied') throw new Error('보안 규칙이 막고 있습니다. firestore.rules를 적용했는지 확인해 주세요.'); }
+  const first = new Set();
+  const mark = k => {
+    if (!first.has(k)) { first.add(k); if (first.size === 6) { S.phase = 'ready'; afterReady(); return; } }
+    scheduleRender(true);
+  };
+  const onErr = k => err => { toast(`불러오기 오류 (${k}): ${err.code || err.message}`); mark(k); };
+  unsubs.push(F.onSnapshot(uref(), s => { S.profile = s.exists() ? s.data() : {}; mark('profile'); }, onErr('profile')));
+  unsubs.push(F.onSnapshot(ucol('events'), qs => { S.pev = qs.docs.map(d => ({ ...d.data(), area: 'p' })); mark('pev'); }, onErr('pev')));
+  unsubs.push(F.onSnapshot(ucol('todos'), qs => { const m = {}; qs.docs.forEach(d => { m[d.id] = d.data().items || []; }); S.todos = m; mark('todos'); }, onErr('todos')));
+  unsubs.push(F.onSnapshot(ucol('memos'), qs => { S.memos = qs.docs.map(d => d.data()); mark('memos'); }, onErr('memos')));
   let checked = false;
-  Cloud.unsubs.push(F.onSnapshot(F.collection(db, 'planners', Cloud.pid, 'items'), async qs => {
+  unsubs.push(F.onSnapshot(pcol('items'), async qs => {
     if (!checked && !qs.metadata.fromCache) {
       checked = true;
-      if (qs.empty) { await migrateToCloud(); return; }
+      if (qs.empty) { await commitOps(seedItemObjs().map(i => ['set', pref('items', i.id), i])); return; }
     }
-    S.items = qs.docs.map(d => d.data());
-    scheduleRender(true);
-  }));
-  Cloud.unsubs.push(F.onSnapshot(F.collection(db, 'planners', Cloud.pid, 'events'), qs => {
-    S.events = qs.docs.map(d => d.data());
-    scheduleRender(true);
-  }));
+    S.items = qs.docs.map(d => d.data()); mark('items');
+  }, onErr('items')));
+  unsubs.push(F.onSnapshot(pcol('events'), qs => { S.cev = qs.docs.map(d => ({ ...d.data(), area: 'c' })); mark('cev'); }, onErr('cev')));
 }
-async function migrateToCloud() {
-  const { F, db } = Cloud.api;
-  const local = readLocal();
-  const items = local?.items?.length ? local.items : seedItems();
-  const events = local?.events || [];
-  const batch = F.writeBatch(db);
-  items.forEach(i => batch.set(Cloud.ref('items', i.id), Cloud.clean(i)));
-  events.forEach(e => batch.set(Cloud.ref('events', e.id), Cloud.clean(e)));
-  await batch.commit();
-  if (events.length) toast(`기기에 있던 일정 ${events.length}건을 클라우드로 옮겼습니다`);
+function afterReady() {
+  render();
+  initNotifications();
+  const cutoff = addDays(today(), -365);   // 1년 지난 할 일 정리 (기존 플래너와 같음)
+  Object.keys(S.todos).filter(d => d < cutoff).forEach(d => F.deleteDoc(uref('todos', d)).catch(() => {}));
 }
 async function login() {
-  const { Au, auth } = Cloud.api;
   const prov = new Au.GoogleAuthProvider();
   try { await Au.signInWithPopup(auth, prov); }
-  catch (e) { if (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment') await Au.signInWithRedirect(auth, prov); else toast('로그인 실패: ' + e.code); }
+  catch (e) {
+    if (['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment', 'auth/cancelled-popup-request'].includes(e.code)) await Au.signInWithRedirect(auth, prov);
+    else if (e.code !== 'auth/popup-closed-by-user') toast('로그인 실패: ' + e.code);
+  }
 }
+async function commitOps(ops) {   // [['set'|'merge'|'del', ref, data]] 를 400개씩 나눠 저장
+  for (let i = 0; i < ops.length; i += 400) {
+    const b = F.writeBatch(db);
+    ops.slice(i, i + 400).forEach(([t, r, d]) => t === 'del' ? b.delete(r) : t === 'merge' ? b.set(r, clean(d), { merge: true }) : b.set(r, clean(d)));
+    await b.commit();
+  }
+}
+const fail = msg => err => toast(`${msg}: ${err.code || err.message}`);
 
-/* ---------- 저장 동작 ---------- */
-async function saveEvent(e, rerender = true) {
-  e.updated = Date.now(); upsert(S.events, e);
+/* ---------- 저장 ---------- */
+function saveEv(e, rerender = true) {
+  e.updated = Date.now();
+  upsert(e.area === 'c' ? S.cev : S.pev, e);
   if (rerender) render();
-  try { await backend.putEvent(e); } catch (err) { toast('저장 실패: ' + err.message); }
+  const { area, ...data } = e;
+  F.setDoc(evRef(e), clean({ ...data, area })).catch(fail('저장 실패'));
 }
-async function removeEvent(id) {
-  S.events = S.events.filter(x => x.id !== id); render();
-  try { await backend.delEvent(id); } catch (err) { toast('삭제 실패: ' + err.message); }
+function delEv(e) {
+  if (e.area === 'c') S.cev = S.cev.filter(x => x.id !== e.id); else S.pev = S.pev.filter(x => x.id !== e.id);
+  F.deleteDoc(evRef(e)).catch(fail('삭제 실패'));
 }
-async function saveItem(i) {
-  upsert(S.items, i); render();
-  try { await backend.putItem(i); } catch (err) { toast('저장 실패: ' + err.message); }
+function moveEv(e, area) {   // 개인 ↔ 회중 옮기기 (새 위치에 쓰고 옛 위치를 지움, 한 번에)
+  const oldRef = evRef(e);
+  if (e.area === 'c') S.cev = S.cev.filter(x => x.id !== e.id); else S.pev = S.pev.filter(x => x.id !== e.id);
+  e.area = area; e.updated = Date.now();
+  upsert(area === 'c' ? S.cev : S.pev, e);
+  commitOps([['set', evRef(e), e], ['del', oldRef]]).catch(fail('옮기기 실패'));
 }
-async function removeItem(id) {
-  S.items = S.items.filter(x => x.id !== id); render();
-  try { await backend.delItem(id); } catch (err) { toast('삭제 실패: ' + err.message); }
+function saveTodos(date) {
+  const items = S.todos[date] || [];
+  if (!items.length) F.deleteDoc(uref('todos', date)).catch(() => {});
+  else F.setDoc(uref('todos', date), clean({ date, items })).catch(fail('저장 실패'));
+}
+function saveMemo(m) { upsert(S.memos, m); F.setDoc(uref('memos', m.id), clean(m)).catch(fail('저장 실패')); }
+function saveItem(it) { upsert(S.items, it); F.setDoc(pref('items', it.id), clean(it)).catch(fail('저장 실패')); }
+function saveProfile(patch) { Object.assign(S.profile, patch); F.setDoc(uref(), clean(patch), { merge: true }).catch(fail('저장 실패')); }
+
+/* 자동 제목 */
+function autoTitle(it, start, slot) {
+  if (it.slotType) return `${it.name} (${slot || slotByDate(it.slotType, start)})`;
+  return it.name;
+}
+function retitle(e) {   // 날짜를 바꿔 칸이 바뀌면 "순회방문 (상반기)" 같은 자동 제목도 바꿈
+  const it = itemOf(e.itemId); if (!it || !it.slotType) return;
+  const re = new RegExp('^' + rx(it.name) + ' \\((상반기|하반기|가을|봄)\\)$');
+  if (re.test(e.title)) e.title = `${it.name} (${slotOf(e)})`;
+}
+function renumber(it, sy) {   // "정기장로모임 2차" 같은 자동 제목을 봉사연도 안 날짜 순서로 다시 매김
+  if (!it || it.slotType || !(it.times > 1)) return;
+  const re = new RegExp('^' + rx(it.name) + ' \\d+차$');
+  congOf(it.id, sy).forEach((x, i) => {
+    const t = `${it.name} ${i + 1}차`;
+    if (re.test(x.title) && x.title !== t) { x.title = t; saveEv(x, false); }
+  });
 }
 
-/* ---------- 렌더 제어 (입력 중에는 원격 갱신으로 화면을 다시 그리지 않음) ---------- */
+/* ---------- 렌더 제어 ---------- */
 let pending = false;
-function typing() { const a = document.activeElement; return a && $app.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.type !== 'checkbox'; }
-function scheduleRender(remote) { if (remote && typing()) { pending = true; return; } render(); }
+function typing() { const a = document.activeElement; return a && $app.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && !['checkbox', 'button', 'submit'].includes(a.type); }
+function scheduleRender(remote) { if (S.phase !== 'ready') return; if (remote && typing()) { pending = true; return; } render(); }
 document.addEventListener('focusout', () => setTimeout(() => { if (pending && !typing()) { pending = false; render(); } }, 0));
 
-/* ---------- 화면: 홈 ---------- */
-function groupSummary(items, year) {
-  let expected = 0, sched = 0, done = 0, prep = false, late = false, nextDate = null;
-  const t = today();
-  items.forEach(it => {
-    expected += it.times || 0;
-    eventsOf(it.id, year).forEach(e => {
-      sched++;
-      const s = evState(e);
-      if (s === 'done') done++;
-      if (s === 'prep') prep = true;
-      if (s === 'late') late = true;
-      if (!e.done && e.start >= t && (!nextDate || e.start < nextDate)) nextDate = e.start;
-    });
-  });
-  let st;
-  if (late) st = 'late';
-  else if (prep) st = 'prep';
-  else if (expected > 0 && done >= expected) st = 'done';
-  else if (sched > 0) st = 'set';
-  else st = expected === 0 ? 'any' : 'none';
-  const base = expected || sched;
-  const pct = base ? Math.min(100, Math.round(done / base * 100)) : 0;
-  const count = expected ? `${done}/${expected}` : (sched ? `${done}/${sched}` : '');
-  return { st, pct, nextDate, count };
+/* 뒤로 가기: 앱 안에서 이동했으면 브라우저 뒤로, 아니면 정해진 화면으로 */
+const stack = [location.hash || '#home'];
+let replacing = false;
+function nav(h, replace) {
+  if (replace) { replacing = true; stack[stack.length - 1] = h; location.replace(h); }
+  else location.hash = h;
 }
-function viewHome() {
-  const y = S.year, t = today();
-  const urgent = S.events.filter(e => !e.done && ['prep', 'late'].includes(evState(e))).sort(byStart);
-  const upcoming = S.events.filter(e => !e.done && evState(e) === 'set').sort(byStart).slice(0, 2);
-  const todayD = new Date();
-  let h = `
-  <div class="between" style="align-items:flex-end;margin-bottom:16px">
-    <div class="col" style="gap:2px">
-      <div class="eyebrow">ELDER PLANNER</div>
-      <div class="row" style="gap:4px">
-        <button class="icon-btn ghost" data-act="year" data-d="-1" aria-label="이전 해">${ico.prev}</button>
-        <h1 class="h1">${y}년</h1>
-        <button class="icon-btn ghost" data-act="year" data-d="1" aria-label="다음 해">${ico.next}</button>
-      </div>
-      <div class="sub">${todayD.getMonth() + 1}월 ${todayD.getDate()}일 ${DOW[todayD.getDay()]}요일</div>
-    </div>
-  </div>
-  <section class="dark" aria-label="지금 준비할 일">
-    <div class="between"><div class="sub" style="font-weight:600">지금 준비할 일</div><div class="sub">${urgent.length}건</div></div>`;
-  if (!urgent.length) {
-    h += `<div class="sub">알림 시점이 된 일정이 없습니다.${upcoming.length ? '' : ' 주요 일정에서 날짜를 잡아 보세요.'}</div>`;
-  }
-  urgent.slice(0, 4).forEach(e => {
-    const s = evState(e); const d = diffDays(e.start, t);
-    const lab = s === 'late' ? '지남' : (d === 0 ? 'D-DAY' : `D-${d}`);
-    h += `<a href="#event/${e.id}" class="row" style="text-decoration:none;color:#fff;gap:12px">
-      <div class="dday ${s === 'late' ? 'late' : ''}"><small>${lab}</small><b>${md(e.start).split(' ')[0]}</b></div>
-      <div class="grow"><div style="font-weight:600" class="ellipsis">${esc(e.title)}</div>
-      <div class="sub ellipsis">${s === 'late' ? '날짜가 지났습니다 · 완료 처리 또는 기록 정리' : `준비 ${doneTasks(e)}/${(e.tasks || []).length} 완료`}</div></div></a>`;
-  });
-  if (urgent.length > 4) h += `<div class="sub">외 ${urgent.length - 4}건</div>`;
-  if (upcoming.length) {
-    h += `<div style="height:1px;background:#33404F"></div>`;
-    upcoming.forEach(e => {
-      const a = alertDate(e);
-      h += `<a href="#event/${e.id}" class="between" style="text-decoration:none;color:#fff;font-size:14px"><span class="ellipsis">${esc(e.title)}</span><span style="color:#C9D3DD;flex:none">${md(e.start).split(' ')[0]}${a ? ` · 알림 ${md(a).split(' ')[0]}` : ''}</span></a>`;
-    });
-  }
-  h += `</section>
-  <div class="between" style="margin:20px 0 10px"><h2 class="h2" style="margin:0">주요 일정</h2><span class="sub">${y}년</span></div>
-  <div class="list">`;
-  let n = 0;
-  groups().forEach((items, g) => {
-    n++;
-    const sm = groupSummary(items, y);
-    const sub = items.length > 1 ? items.map(i => i.name).join(' · ') : (items[0].prep.length ? '준비: ' + items[0].prep.join(', ') : (items[0].freq || ''));
-    h += `<a class="card grp" href="#group/${encodeURIComponent(g)}">
-      <div class="num">${n}</div>
-      <div class="grow col" style="gap:4px">
-        <div class="row" style="gap:6px;align-items:baseline"><span style="font-weight:600">${esc(g)}</span><span class="sub" style="font-size:12px">${esc(items.length > 1 ? items.length + '종' : (items[0].freq || ''))}</span></div>
-        <div class="sub ellipsis" style="font-size:12px">${esc(sub)}</div>
-        <div class="bar"><i style="width:${sm.pct}%;background:${ST[sm.st][2]}"></i></div>
-      </div>
-      <div class="col" style="gap:4px;align-items:flex-end;flex:none">${chip(sm.st)}<span class="sub" style="font-size:12px">${sm.nextDate ? md(sm.nextDate).split(' ')[0] : esc(sm.count || '-')}</span></div>
-    </a>`;
-  });
-  return h + `</div>`;
-}
+window.addEventListener('hashchange', () => {
+  const h = location.hash || '#home';
+  if (replacing) replacing = false;
+  else if (stack.length > 1 && stack[stack.length - 2] === h) stack.pop();
+  else stack.push(h);
+  window.scrollTo(0, 0);
+  render();
+});
+function goBack(fallback) { if (stack.length > 1) history.back(); else nav(fallback, true); }
+const topbar = (title, fallback, right = '') => `<div class="topbar"><a href="${fallback}" class="icon-btn ghost" data-back="${fallback}" aria-label="뒤로">${ico.back}</a><div style="font-weight:600">${title}</div>${right || '<span style="width:44px"></span>'}</div>`;
+const notFound = () => topbar('', '#home') + `<div class="card empty">찾을 수 없습니다. 삭제되었을 수 있습니다.</div>`;
 
-/* ---------- 화면: 그룹 ---------- */
-function viewGroup(g) {
-  const items = groups().get(g);
-  if (!items) return notFound();
-  const y = S.year;
-  let h = topbar('#home', esc(g)) + `<div class="sub" style="margin-bottom:12px">${y}년 일정</div><div class="list">`;
-  items.forEach(it => {
-    const evs = eventsOf(it.id, y);
-    const remain = it.times ? Math.max(0, it.times - evs.length) : 0;
-    h += `<section class="card col" aria-label="${esc(it.name)}">
-      <div class="between">
-        <div class="col" style="gap:2px"><div style="font-weight:700">${esc(it.name)}</div>
-        <div class="sub" style="font-size:12px">${esc(it.freq || (it.times ? `연 ${it.times}회` : '수시'))} · 알림 ${esc(leadLabel(it.leadDays))}</div></div>
-        <a href="#item/${it.id}" class="icon-btn ghost" aria-label="${esc(it.name)} 항목 편집">${ico.edit}</a>
-      </div>
-      ${it.prep.length ? `<div class="sub" style="font-size:13px">준비사항: ${esc(it.prep.join(', '))}</div>` : ''}`;
-    evs.forEach(e => {
-      const s = evState(e);
-      h += `<a href="#event/${e.id}" class="row" style="text-decoration:none;color:var(--ink);background:var(--bg);border-radius:12px;padding:10px 12px;min-height:48px">
-        <div class="grow"><div style="font-weight:600;font-size:14px" class="ellipsis">${esc(e.title)}</div><div class="sub" style="font-size:12px">${span(e)}${(e.tasks || []).length ? ` · 준비 ${doneTasks(e)}/${e.tasks.length}` : ''}</div></div>${chip(s)}</a>`;
-    });
-    if (!evs.length) h += `<div class="sub" style="font-size:13px">${remain ? `아직 날짜가 잡히지 않았습니다 (${remain}회 남음)` : '등록된 일정 없음'}</div>`;
-    else if (remain) h += `<div class="sub" style="font-size:13px">${remain}회 더 잡아야 합니다</div>`;
-    h += `<a class="btn dash block" style="display:flex;align-items:center;justify-content:center;text-decoration:none" href="#new/${it.id}">+ 일정 잡기</a></section>`;
-  });
-  return h + `</div>`;
+/* =====================================================================
+   화면: 달력 (연 · 월 · 주 · 목록)
+   ===================================================================== */
+function calEvents() { const f = S.cal.filter; return allEv().filter(e => e.start && (f === 'all' || e.area === f)); }
+function tagHtml(e) {
+  const c = chipStyle(e);
+  return `<span class="tag ${e.done ? 'done-t' : ''}" style="background:${c.bg};color:${c.fg}">${esc(e.title)}</span>`;
 }
-
-/* ---------- 화면: 새 일정 ---------- */
-function viewNew(itemId) {
-  const it = itemOf(itemId);
-  if (!it) return notFound();
-  const cnt = eventsOf(it.id, S.year).length;
-  const title = it.times > 1 ? `${it.name} ${cnt + 1}차` : it.name;
-  return topbar(`#group/${encodeURIComponent(it.group)}`, '일정 잡기') + `
-  <form class="col" data-form="new" data-item="${it.id}" style="gap:14px">
-    <label class="field">제목<input name="title" value="${esc(title)}" required></label>
-    <div class="row" style="gap:10px">
-      <label class="field grow">시작일<input type="date" name="start" required></label>
-      <label class="field grow">종료일 (선택)<input type="date" name="end"></label>
-    </div>
-    <label class="field">장소<input name="place" placeholder="예: 왕국회관"></label>
-    <label class="field">준비 알림<select name="lead">${LEADS.map(([v, l]) => `<option value="${v ?? ''}" ${v === (it.leadDays ?? null) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
-    <div class="sub">준비사항 ${it.prep.length ? esc(it.prep.join(', ')) + ' 가 체크 목록으로 들어갑니다.' : '은 다음 화면에서 추가할 수 있습니다.'}</div>
-    <button class="btn primary block" type="submit">저장</button>
-  </form>`;
+function evRow(e) {
+  const c = chipStyle(e);
+  const right = e.area === 'c' ? chip(evState(e)) : `<span class="chip" style="background:${c.bg};color:${c.fg}">${esc(e.cat || '개인')}</span>`;
+  const extra = e.area === 'c' && slotOf(e) ? ` · ${slotOf(e)}` : '';
+  return `<a href="#ev/${e.area}/${encodeURIComponent(e.id)}" class="card evrow">
+    <span class="bar6" style="background:${c.bar}"></span>
+    <span class="grow col" style="gap:2px"><span class="ellipsis ${e.done ? 'done-t' : ''}" style="font-weight:600;font-size:14px">${esc(e.title)}</span>
+    <span class="sub ellipsis" style="font-size:12px">${e.area === 'c' ? '회중 · ' : ''}${span(e)}${extra}${e.place ? ' · ' + esc(e.place) : ''}</span></span>${right}</a>`;
 }
-
-/* ---------- 화면: 일정 상세 ---------- */
-function viewEvent(id) {
-  const e = S.events.find(x => x.id === id);
-  if (!e) return notFound();
-  const it = itemOf(e.itemId);
-  const s = evState(e);
-  const a = alertDate(e);
-  const past = S.events.filter(x => x.itemId === e.itemId && x.id !== e.id && x.done).sort(byStart).reverse().slice(0, 5);
-  const tasks = e.tasks || [];
-  let h = topbar(it ? `#group/${encodeURIComponent(it.group)}` : '#home', '일정 상세') + `
-  <div class="col" style="gap:6px;margin-bottom:14px">
-    <div class="row" style="gap:6px">${it ? `<span class="chip st-set">${esc(it.group)}</span>` : ''}${chip(s)}</div>
-    <label class="sr" for="f-title">제목</label>
-    <input id="f-title" data-f="title" value="${esc(e.title)}" style="font-size:22px;font-weight:700;border:none;background:transparent;padding:4px 0;min-height:44px">
-  </div>
-  <div class="card" style="padding:2px 14px;margin-bottom:16px">
-    <label class="kv"><span class="sub" style="font-size:14px">시작일</span><input type="date" data-f="start" value="${esc(e.start)}"></label>
-    <label class="kv"><span class="sub" style="font-size:14px">종료일</span><input type="date" data-f="end" value="${esc(e.end || '')}"></label>
-    <label class="kv"><span class="sub" style="font-size:14px">장소</span><input data-f="place" value="${esc(e.place || '')}" placeholder="입력"></label>
-    <label class="kv"><span class="sub" style="font-size:14px">알림</span><select data-f="leadDays">${LEADS.map(([v, l]) => `<option value="${v ?? ''}" ${v === leadOf(e) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
-    ${a ? `<div class="kv"><span class="sub" style="font-size:14px">준비 시작</span><span style="font-weight:600;color:var(--warn-d)">${md(a)}</span></div>` : ''}
-  </div>
-  <div class="between"><h2 class="h2" style="margin:0">준비사항</h2><span class="sub">${doneTasks(e)} / ${tasks.length}</span></div>
-  <div class="card" style="padding:2px 10px;margin:10px 0 16px">`;
-  tasks.forEach((t, i) => {
-    h += `<div class="task ${t.done ? 'done' : ''}">
-      <input type="checkbox" id="t${i}" data-act="task" data-i="${i}" ${t.done ? 'checked' : ''}>
-      <label for="t${i}" class="grow" style="min-height:44px;display:flex;align-items:center"><span>${esc(t.t)}</span></label>
-      <button class="icon-btn ghost" data-act="deltask" data-i="${i}" aria-label="${esc(t.t)} 삭제">${ico.x}</button></div>`;
-  });
-  h += `<form data-form="task" class="row" style="padding:8px 0;gap:8px">
-      <label class="sr" for="newtask">준비사항 추가</label>
-      <input id="newtask" name="t" placeholder="준비사항 추가" style="flex:1;border:1px solid var(--line);border-radius:10px;min-height:44px;padding:0 12px">
-      <button class="icon-btn" type="submit" style="background:var(--acc);color:#fff" aria-label="추가">${ico.plus}</button></form>
-  </div>
-  <label class="field" style="margin-bottom:16px"><span class="h2" style="color:var(--ink);margin:0">메모 · 기록</span>
-    <textarea data-f="memo" rows="5" placeholder="협의 내용, 연락처, 결정 사항, 다음에 참고할 점 등">${esc(e.memo || '')}</textarea></label>`;
-  if (past.length) {
-    h += `<h2 class="h2" style="margin:0 0 10px">지난 기록 (${esc(it?.name || '')})</h2><div class="list" style="margin-bottom:16px">`;
-    past.forEach(p => {
-      h += `<a href="#event/${p.id}" class="card row" style="text-decoration:none;color:var(--ink);gap:12px">
-        <div style="width:44px;text-align:center;color:var(--ok-d);flex:none"><div style="font-size:11px">${yearOf(p)}</div><div style="font-weight:700">${parse(p.start).getMonth() + 1}월</div></div>
-        <div class="grow"><div style="font-weight:600;font-size:14px" class="ellipsis">${esc(p.title)}</div><div class="sub ellipsis" style="font-size:12px">${p.memo ? esc(p.memo.split('\n')[0]) : `준비 ${doneTasks(p)}/${(p.tasks || []).length}`}</div></div>${ico.next}</a>`;
-    });
-    h += `</div>`;
-  }
-  h += `<div class="col">
-    ${e.done
-      ? `<div class="sub" style="text-align:center">${e.doneAt ? new Date(e.doneAt).toLocaleDateString('ko-KR') + ' 에 ' : ''}기록보관됨</div><button class="btn block" data-act="undone">기록보관 해제 (다시 진행중으로)</button>`
-      : `<button class="btn primary block" data-act="done">완료 후 기록보관</button>`}
-    <button class="btn danger block" data-act="delevent">이 일정 삭제</button>
-  </div>`;
-  return h;
-}
-
-/* ---------- 화면: 항목 편집 ---------- */
-function viewItem(id) {
-  const isNew = id === 'new';
-  const it = isNew ? { id: 'i' + newId(), group: '', name: '', freq: '', times: 1, prep: [], leadDays: null, order: Math.max(0, ...S.items.map(i => i.order || 0)) + 1 } : itemOf(id);
-  if (!it) return notFound();
-  const used = S.events.some(e => e.itemId === it.id);
-  const gl = [...groups().keys()];
-  return topbar(isNew ? '#settings' : `#group/${encodeURIComponent(it.group)}`, isNew ? '새 일정 항목' : '항목 편집') + `
-  <form class="col" data-form="item" data-id="${it.id}" data-new="${isNew ? 1 : ''}" style="gap:14px">
-    <label class="field">그룹 (홈 화면 카드)<input name="group" value="${esc(it.group)}" list="grouplist" required></label>
-    <datalist id="grouplist">${gl.map(g => `<option value="${esc(g)}">`).join('')}</datalist>
-    <label class="field">항목 이름<input name="name" value="${esc(it.name)}" required></label>
-    <div class="row" style="gap:10px">
-      <label class="field grow">주기 표시<input name="freq" value="${esc(it.freq)}" placeholder="예: 연 2회, 봄"></label>
-      <label class="field" style="width:120px">연간 횟수<input name="times" type="number" min="0" max="52" value="${it.times ?? 0}"></label>
-    </div>
-    <div class="sub" style="margin-top:-6px">연간 횟수 0 = 수시 (경조사처럼 정해진 횟수 없음)</div>
-    <label class="field">기본 준비 알림<select name="lead">${LEADS.map(([v, l]) => `<option value="${v ?? ''}" ${v === (it.leadDays ?? null) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
-    <label class="field">기본 준비사항 (한 줄에 하나)<textarea name="prep" rows="4">${esc(it.prep.join('\n'))}</textarea></label>
-    <button class="btn primary block" type="submit">저장</button>
-    ${isNew ? '' : (used ? `<div class="sub" style="text-align:center">이 항목에 등록된 일정이 있어 삭제할 수 없습니다.</div>` : `<button class="btn danger block" type="button" data-act="delitem" data-id="${it.id}">항목 삭제</button>`)}
-  </form>`;
-}
-
-/* ---------- 화면: 달력 ---------- */
-const onDate = (e, d) => e.start <= d && d <= (e.end || e.start);
 function viewCal() {
-  const c = S.cal, cur = parse(c.cursor);
-  const modes = [['week', '주'], ['month', '월'], ['year', '연']];
+  const c = S.cal, cur = parse(c.cursor), t = today();
   let head;
   if (c.mode === 'year') head = `${cur.getFullYear()}년`;
   else if (c.mode === 'month') head = `${cur.getFullYear()}년 ${cur.getMonth() + 1}월`;
-  else { const s = addDays(c.cursor, -cur.getDay()); head = `${md(s).split(' ')[0]} – ${md(addDays(s, 6)).split(' ')[0]}`; }
+  else if (c.mode === 'week') { const s = addDays(c.cursor, -cur.getDay()); head = `${mdShort(s)} – ${mdShort(addDays(s, 6))}`; }
+  else head = '다가오는 일정';
+  const evs = calEvents();
   let h = `
   <div class="between" style="margin-bottom:12px">
     <h1 class="h1" style="font-size:22px">${head}</h1>
-    <div class="row" style="gap:4px">
+    ${c.mode === 'list' ? '' : `<div class="row" style="gap:4px">
       <button class="icon-btn" data-act="cal" data-d="-1" aria-label="이전">${ico.prev}</button>
-      <button class="btn" style="min-height:44px;padding:0 12px" data-act="caltoday">오늘</button>
-      <button class="icon-btn" data-act="cal" data-d="1" aria-label="다음">${ico.next}</button>
-    </div>
+      <button class="btn small" data-act="caltoday">오늘</button>
+      <button class="icon-btn" data-act="cal" data-d="1" aria-label="다음">${ico.next}</button></div>`}
   </div>
-  <div class="seg" role="tablist" aria-label="보기 단위" style="margin-bottom:14px">
-    ${modes.map(([m, l]) => `<button role="tab" aria-selected="${c.mode === m}" class="${c.mode === m ? 'on' : ''}" data-act="calmode" data-m="${m}">${l}</button>`).join('')}
+  <div class="seg" role="tablist" aria-label="보기 단위" style="margin-bottom:10px">
+    ${[['year', '연'], ['month', '월'], ['week', '주'], ['list', '목록']].map(([m, l]) => `<button role="tab" aria-selected="${c.mode === m}" class="${c.mode === m ? 'on' : ''}" data-act="calmode" data-m="${m}">${l}</button>`).join('')}
+  </div>
+  <div class="filters" role="group" aria-label="영역" style="margin-bottom:14px">
+    ${[['all', '전체'], ['p', '개인'], ['c', '회중']].map(([f, l]) => `<button class="fchip ${c.filter === f ? 'on' : ''}" aria-pressed="${c.filter === f}" data-act="filter" data-f="${f}">${l}</button>`).join('')}
   </div>`;
-  const t = today();
   if (c.mode === 'month') {
-    const first = new Date(cur.getFullYear(), cur.getMonth(), 1);
+    const first = new Date(cur.getFullYear(), cur.getMonth(), 1), last = new Date(cur.getFullYear(), cur.getMonth() + 1, 0);
     const start = addDays(ymd(first), -first.getDay());
-    const last = new Date(cur.getFullYear(), cur.getMonth() + 1, 0);
     const cells = Math.ceil((first.getDay() + last.getDate()) / 7) * 7;
     h += `<div class="cal"><div class="dow">${DOW.map((d, i) => `<span class="${i === 0 ? 'sun' : ''}">${d}</span>`).join('')}</div><div class="grid">`;
     for (let i = 0; i < cells; i++) {
       const d = addDays(start, i), dd = parse(d);
-      const evs = S.events.filter(e => onDate(e, d)).sort(byStart);
-      h += `<button data-act="selday" data-d="${d}" class="${dd.getMonth() !== cur.getMonth() ? 'out' : ''} ${d === c.sel ? 'sel' : ''} ${d === t ? 'today' : ''}" aria-label="${dd.getMonth() + 1}월 ${dd.getDate()}일 일정 ${evs.length}건">
-        <span class="d ${dd.getDay() === 0 ? 'sun' : ''}">${dd.getDate()}</span>
-        ${evs.slice(0, 2).map(e => `<span class="tag" style="background:${ST[evState(e)][2]}">${esc(itemOf(e.itemId)?.name || e.title)}</span>`).join('')}
-        ${evs.length > 2 ? `<span class="sub" style="font-size:9px">+${evs.length - 2}</span>` : ''}</button>`;
+      const de = evs.filter(e => onDate(e, d)).sort(byStart);
+      h += `<button data-act="selday" data-d="${d}" class="${dd.getMonth() !== cur.getMonth() ? 'out' : ''} ${d === c.sel ? 'sel' : ''} ${d === t ? 'today' : ''}" aria-label="${dd.getMonth() + 1}월 ${dd.getDate()}일 일정 ${de.length}건">
+        <span class="d ${dd.getDay() === 0 ? 'sun' : ''}"><span>${dd.getDate()}</span></span>
+        ${de.slice(0, 2).map(tagHtml).join('')}${de.length > 2 ? `<span class="sub" style="font-size:9px;text-align:center">+${de.length - 2}</span>` : ''}</button>`;
     }
     h += `</div></div>`;
-    const selEv = S.events.filter(e => onDate(e, c.sel)).sort(byStart);
-    h += `<h2 class="h2" style="margin:16px 0 10px">${md(c.sel)}</h2>` + (selEv.length ? `<div class="list">${selEv.map(evRow).join('')}</div>` : `<div class="card empty">이 날 일정이 없습니다</div>`);
-    const ms = ymd(first), me = ymd(last);
-    const monthEv = S.events.filter(e => e.start <= me && (e.end || e.start) >= ms).sort(byStart);
-    h += `<h2 class="h2" style="margin:18px 0 10px">이 달의 일정 (${monthEv.length})</h2>` + (monthEv.length ? `<div class="list">${monthEv.map(evRow).join('')}</div>` : `<div class="card empty">이 달에 잡힌 일정이 없습니다</div>`);
+    const sel = evs.filter(e => onDate(e, c.sel)).sort(byStart);
+    h += `<div class="between"><h2 class="h2">${md(c.sel)}</h2><a class="btn small" href="#new/p?d=${c.sel}">+ 이 날 일정</a></div>`;
+    h += sel.length ? `<div class="list">${sel.map(evRow).join('')}</div>` : `<div class="card empty">이 날 일정이 없습니다</div>`;
   } else if (c.mode === 'week') {
     const s = addDays(c.cursor, -cur.getDay());
     h += `<div class="list">`;
     for (let i = 0; i < 7; i++) {
       const d = addDays(s, i), dd = parse(d);
-      const evs = S.events.filter(e => onDate(e, d)).sort(byStart);
-      h += `<div class="card row" style="gap:14px;align-items:flex-start;${d === t ? 'outline:2px solid var(--acc);outline-offset:-2px' : ''}">
-        <div style="width:40px;text-align:center;flex:none"><div class="sub" style="font-size:11px;${i === 0 ? 'color:var(--late)' : ''}">${DOW[i]}</div><div style="font-size:18px;font-weight:700">${dd.getDate()}</div></div>
-        <div class="grow col" style="gap:6px;justify-content:center;min-height:44px">${evs.length ? evs.map(e => `<a href="#event/${e.id}" class="between" style="text-decoration:none;color:var(--ink);min-height:32px"><span class="ellipsis" style="font-size:14px">${esc(e.title)}</span>${chip(evState(e))}</a>`).join('') : '<span class="mute" style="font-size:14px">—</span>'}</div></div>`;
+      const de = evs.filter(e => onDate(e, d)).sort(byStart);
+      h += `<div class="card row" style="gap:12px;align-items:flex-start;${d === t ? 'outline:2px solid var(--acc);outline-offset:-2px' : ''}">
+        <a href="#new/p?d=${d}" style="width:40px;text-align:center;flex:none;text-decoration:none;color:var(--ink)" aria-label="${dd.getMonth() + 1}월 ${dd.getDate()}일에 일정 추가"><div class="sub ${i === 0 ? 'sun' : ''}" style="font-size:11px">${DOW[i]}</div><div style="font-size:18px;font-weight:700">${dd.getDate()}</div></a>
+        <div class="grow col" style="gap:6px;justify-content:center;min-height:44px">${de.length ? de.map(e => { const cs = chipStyle(e); return `<a href="#ev/${e.area}/${encodeURIComponent(e.id)}" class="row" style="text-decoration:none;color:var(--ink);min-height:34px;gap:8px"><span style="width:8px;height:8px;border-radius:99px;background:${cs.bar};flex:none"></span><span class="ellipsis grow ${e.done ? 'done-t' : ''}" style="font-size:14px">${esc(e.title)}</span>${e.area === 'c' ? chip(evState(e)) : ''}</a>`; }).join('') : '<span class="mute" style="font-size:14px">—</span>'}</div></div>`;
     }
     h += `</div>`;
-  } else {
+  } else if (c.mode === 'year') {
     const yy = cur.getFullYear(), nowM = new Date().getFullYear() === yy ? new Date().getMonth() : -1;
     h += `<div class="years">`;
     for (let m = 0; m < 12; m++) {
       const ms = `${yy}-${pad(m + 1)}-01`, me = ymd(new Date(yy, m + 1, 0));
-      const evs = S.events.filter(e => e.start <= me && (e.end || e.start) >= ms).sort(byStart);
-      h += `<button data-act="pickmonth" data-m="${m}" class="${m === nowM ? 'now' : ''}" aria-label="${m + 1}월 일정 ${evs.length}건">
-        <span style="font-weight:700">${m + 1}월</span>
-        ${evs.slice(0, 3).map(e => { const k = evState(e); return `<span class="it ${ST[k][1]}">${esc(e.title)}</span>`; }).join('')}
-        ${evs.length > 3 ? `<span class="sub" style="font-size:11px">+${evs.length - 3}</span>` : ''}</button>`;
+      const me2 = evs.filter(e => e.start <= me && endOf(e) >= ms).sort(byStart);
+      h += `<button data-act="pickmonth" data-m="${m}" class="${m === nowM ? 'now' : ''}" aria-label="${m + 1}월 일정 ${me2.length}건"><span style="font-weight:700">${m + 1}월</span>
+        ${me2.slice(0, 3).map(e => { const cs = chipStyle(e); return `<span class="it" style="background:${cs.bg};color:${cs.fg}">${esc(e.title)}</span>`; }).join('')}
+        ${me2.length > 3 ? `<span class="sub" style="font-size:11px">+${me2.length - 3}</span>` : ''}</button>`;
     }
     h += `</div>`;
+  } else {
+    const up = evs.filter(e => endOf(e) >= t).sort(byStart);
+    if (!up.length) h += `<div class="card empty">다가오는 일정이 없습니다</div>`;
+    let curM = '';
+    up.forEach(e => {
+      const m = e.start < t ? t.slice(0, 7) : e.start.slice(0, 7);
+      if (m !== curM) { if (curM) h += `</div>`; curM = m; h += `<h2 class="h2">${+m.slice(0, 4)}년 ${+m.slice(5)}월</h2><div class="list">`; }
+      h += evRow(e);
+    });
+    if (curM) h += `</div>`;
   }
-  return h;
-}
-function evRow(e) {
-  return `<a href="#event/${e.id}" class="card row" style="text-decoration:none;color:var(--ink);gap:12px">
-    <span style="width:6px;align-self:stretch;border-radius:3px;background:${ST[evState(e)][2]};flex:none"></span>
-    <span class="grow col" style="gap:2px"><span style="font-weight:600;font-size:14px" class="ellipsis">${esc(e.title)}</span><span class="sub" style="font-size:12px">${span(e)}${e.place ? ' · ' + esc(e.place) : ''}</span></span>${chip(evState(e))}</a>`;
+  return h + `<a class="fab" href="#new/${c.filter === 'c' ? 'c' : 'p'}?d=${c.mode === 'month' ? c.sel : today()}" aria-label="새 일정 추가">${ico.plus}</a>`;
 }
 
-/* ---------- 화면: 기록보관 ---------- */
+/* =====================================================================
+   화면: 오늘
+   ===================================================================== */
+function windowAlerts() {   // 기존 플래너 규칙: 시작 전날 18시 ~ 종료일 끝까지
+  const now = Date.now(), t = today();
+  const at = (s, h, m = 0, sec = 0) => { const [y, mo, d] = s.split('-').map(Number); return new Date(y, mo - 1, d, h, m, sec).getTime(); };
+  return allEv().filter(e => !e.done && e.start && now >= at(e.start, 18) - 86400000 && now <= at(endOf(e), 23, 59, 59))
+    .map(e => ({ e, tag: t < e.start ? 'tomorrow' : 'today' })).sort((a, b) => byStart(a.e, b.e));
+}
+const prepAlerts = () => S.cev.filter(e => !e.done && ['prep', 'late'].includes(evState(e))).sort(byStart);
+function prepCard(list, title) {
+  const t = today();
+  let h = `<section class="dark" aria-label="${title}"><div class="between"><div class="sub" style="font-weight:600">${title}</div><div class="sub">${list.length}건</div></div>`;
+  if (!list.length) h += `<div class="sub">준비 알림 시점이 된 회중 일정이 없습니다.</div>`;
+  list.slice(0, 5).forEach(e => {
+    const s = evState(e), d = diffDays(e.start, t);
+    const lab = s === 'late' ? '지남' : d <= 0 ? '진행중' : `D-${d}`;
+    h += `<a href="#ev/c/${encodeURIComponent(e.id)}" class="row" style="gap:12px">
+      <div class="dday ${s === 'late' ? 'late' : ''}"><small>${lab}</small><b>${mdShort(e.start)}</b></div>
+      <div class="grow"><div style="font-weight:600" class="ellipsis">${esc(e.title)}</div>
+      <div class="sub ellipsis">${s === 'late' ? '날짜가 지났습니다 · 완료 처리 또는 기록 정리' : `준비 ${doneCount(e)}/${(e.checklist || []).length} 완료`}</div></div></a>`;
+  });
+  if (list.length > 5) h += `<div class="sub">외 ${list.length - 5}건</div>`;
+  return h + `</section>`;
+}
+function viewToday() {
+  const ds = S.todoDate, t = today(), dt = parse(ds);
+  const evs = allEv().filter(e => e.start && onDate(e, ds)).sort((a, b) => ((a.timeline?.[0]?.time) || '99').localeCompare((b.timeline?.[0]?.time) || '99'));
+  const todos = S.todos[ds] || [];
+  const done = evs.filter(e => e.done).length + todos.filter(x => x.done).length, total = evs.length + todos.length;
+  let h = `
+  <div class="between" style="margin-bottom:6px">
+    <button class="icon-btn" data-act="tdate" data-d="-1" aria-label="전날">${ico.prev}</button>
+    <div style="text-align:center"><div style="font-size:19px;font-weight:700">${dt.getFullYear()}년 ${dt.getMonth() + 1}월 ${dt.getDate()}일 (${DOW[dt.getDay()]})</div>
+    <div class="sub">${ds === t ? '오늘' : ds < t ? '지난 날짜' : '다가오는 날짜'}</div></div>
+    <button class="icon-btn" data-act="tdate" data-d="1" aria-label="다음날">${ico.next}</button>
+  </div>
+  ${ds !== t ? `<div style="text-align:center;margin-bottom:8px"><button class="btn small" data-act="ttoday">오늘로 이동</button></div>` : ''}
+  <div class="card col" style="gap:8px;margin:8px 0 14px"><div class="between"><span class="sub">진행률</span><b>${done}/${total}</b></div><div class="progress"><i style="width:${total ? Math.round(done / total * 100) : 0}%"></i></div></div>`;
+  if (ds === t) {
+    const wa = windowAlerts();
+    if (wa.length) {
+      h += `<section class="card col" style="gap:8px;margin-bottom:12px;background:#FFF7E0" aria-label="알림"><div style="font-weight:700">알림 ${wa.length}</div>`;
+      wa.slice(0, 5).forEach(({ e, tag }) => { h += `<a href="#ev/${e.area}/${encodeURIComponent(e.id)}" class="row" style="text-decoration:none;color:var(--ink);min-height:36px"><span class="chip ${tag === 'today' ? 'st-late' : 'st-prep'}">${tag === 'today' ? '오늘' : '내일 ' + mdShort(e.start)}</span><span class="ellipsis">${esc(e.title)}</span></a>`; });
+      h += `</section>`;
+    }
+    const pa = prepAlerts();
+    if (pa.length) h += prepCard(pa, '회중 · 지금 준비할 일');
+  }
+  h += `<h2 class="h2">일정</h2>`;
+  h += evs.length ? `<div class="card" style="padding:2px 12px">${evs.map(e => {
+    const cs = chipStyle(e), time = e.timeline?.[0]?.time || '';
+    return `<div class="line ${e.done ? 'done' : ''}"><input type="checkbox" data-chk="evdone" data-area="${e.area}" data-id="${esc(e.id)}" ${e.done ? 'checked' : ''} aria-label="${esc(e.title)} 완료">
+      ${time ? `<span class="sub" style="width:44px;flex:none">${esc(time)}</span>` : ''}
+      <span class="chip" style="background:${cs.bg};color:${cs.fg}">${esc(classLabel(e))}</span>
+      <a href="#ev/${e.area}/${encodeURIComponent(e.id)}" class="grow ellipsis ${e.done ? 'done-t' : ''}" style="color:var(--ink);text-decoration:none;min-height:44px;display:flex;align-items:center">${esc(e.title)}</a></div>`;
+  }).join('')}</div>` : `<div class="card empty">등록된 일정이 없습니다</div>`;
+  h += `<h2 class="h2">할 일</h2><div class="card" style="padding:2px 12px">`;
+  todos.forEach((x, i) => {
+    h += `<div class="line ${x.done ? 'done' : ''}"><input type="checkbox" data-chk="todo" data-i="${i}" ${x.done ? 'checked' : ''} aria-label="완료">
+      <label class="sr" for="td${i}">할 일</label><input id="td${i}" class="t" data-todo="${i}" value="${esc(x.text)}">
+      <button class="icon-btn ghost" data-act="todo-note" data-i="${i}" aria-label="메모" style="opacity:${x.note ? 1 : .45}">${ico.note}</button>
+      <button class="icon-btn ghost" data-act="todo-del" data-i="${i}" aria-label="삭제">${ico.x}</button></div>`;
+    if (S.openNote === x.id) h += `<div style="padding:0 0 10px"><label class="sr" for="tn${i}">할 일 메모</label><textarea id="tn${i}" class="inp" data-todonote="${i}" rows="3" placeholder="이 할 일에 대한 메모">${esc(x.note || '')}</textarea></div>`;
+  });
+  h += `<form data-form="todo" class="row" style="padding:8px 0;gap:8px"><label class="sr" for="newtodo">할 일 추가</label>
+    <input id="newtodo" name="t" class="inp" placeholder="할 일을 입력하세요" style="min-height:44px">
+    <button class="icon-btn" type="submit" style="background:var(--acc);color:#fff" aria-label="추가">${ico.plus}</button></form></div>`;
+  return h;
+}
+
+/* =====================================================================
+   화면: 회중 (봉사연도 기준)
+   ===================================================================== */
+function groupSummary(items, sy) {
+  let expected = 0, sched = 0, done = 0, prep = false, late = false, nextDate = null;
+  const t = today();
+  items.forEach(it => {
+    expected += it.times || 0;
+    congOf(it.id, sy).forEach(e => {
+      sched++;
+      const s = evState(e);
+      if (s === 'done') done++; if (s === 'prep') prep = true; if (s === 'late') late = true;
+      if (!e.done && e.start >= t && (!nextDate || e.start < nextDate)) nextDate = e.start;
+    });
+  });
+  let st;
+  if (late) st = 'late'; else if (prep) st = 'prep';
+  else if (expected > 0 && done >= expected) st = 'done';
+  else if (sched > 0) st = 'set'; else st = expected === 0 ? 'any' : 'none';
+  const base = expected || sched;
+  return { st, pct: base ? Math.min(100, Math.round(done / base * 100)) : 0, nextDate, count: expected ? `${done}/${expected}` : (sched ? `${done}/${sched}` : '') };
+}
+function congHeader(sub) {
+  const sy = S.sy, cur = syOf(today());
+  return `<div class="col" style="gap:2px;margin-bottom:12px">
+    <div class="eyebrow">회중 일정</div>
+    <div class="row" style="gap:2px;margin-left:-10px">
+      <button class="icon-btn ghost" data-act="sy" data-d="-1" aria-label="이전 봉사연도">${ico.prev}</button>
+      <h1 class="h1">${sy} 봉사연도</h1>
+      <button class="icon-btn ghost" data-act="sy" data-d="1" aria-label="다음 봉사연도">${ico.next}</button>
+    </div>
+    <div class="sub">${sy - 1}년 9월 ~ ${sy}년 8월${sy === cur ? ` · 지금 ${halfOf(today())} (${SLOT_HINT[halfOf(today())]})` : ''}</div>
+  </div>
+  <div class="seg" style="margin-bottom:14px"><a href="#cong" class="${sub !== 'rec' ? 'on' : ''}">주요 일정</a><a href="#cong/rec" class="${sub === 'rec' ? 'on' : ''}">기록보관</a></div>`;
+}
+function viewCong(sub) {
+  if (sub === 'rec') return congHeader(sub) + viewRecords();
+  const sy = S.sy;
+  let h = congHeader(sub) + prepCard(prepAlerts(), '지금 준비할 일') + `<h2 class="h2">주요 일정</h2><div class="list">`;
+  let n = 0;
+  groups().forEach((items, g) => {
+    n++;
+    const sm = groupSummary(items, sy);
+    let sub2;
+    if (items.length > 1) sub2 = items.map(i => i.name).join(' · ');
+    else if (items[0].slotType) sub2 = SLOTS[items[0].slotType].map(s => { const ev = congOf(items[0].id, sy).find(e => slotOf(e) === s); return `${s} ${ev ? (ev.done ? '✓완료' : mdShort(ev.start)) : '미정'}`; }).join(' · ');
+    else sub2 = items[0].prep.length ? '준비: ' + items[0].prep.join(', ') : (items[0].freq || '');
+    h += `<a class="card evrow" href="#group/${encodeURIComponent(g)}">
+      <div class="num">${n}</div>
+      <div class="grow col" style="gap:4px">
+        <div class="row" style="gap:6px;align-items:baseline"><span style="font-weight:600">${esc(g)}</span><span class="sub" style="font-size:12px">${esc(items.length > 1 ? items.length + '종' : (items[0].freq || ''))}</span></div>
+        <div class="sub ellipsis" style="font-size:12px">${esc(sub2)}</div>
+        <div class="bar"><i style="width:${sm.pct}%;background:${ST[sm.st][2]}"></i></div>
+      </div>
+      <div class="col" style="gap:4px;align-items:flex-end;flex:none">${chip(sm.st)}<span class="sub" style="font-size:12px">${sm.nextDate ? mdShort(sm.nextDate) : esc(sm.count || '-')}</span></div></a>`;
+  });
+  return h + `</div>`;
+}
+function congEvLine(e) {
+  return `<a href="#ev/c/${encodeURIComponent(e.id)}" class="row" style="text-decoration:none;color:var(--ink);background:var(--bg);border-radius:12px;padding:10px 12px;min-height:48px">
+    <div class="grow"><div style="font-weight:600;font-size:14px" class="ellipsis">${esc(e.title)}</div><div class="sub" style="font-size:12px">${span(e)}${(e.checklist || []).length ? ` · 준비 ${doneCount(e)}/${e.checklist.length}` : ''}</div></div>${chip(evState(e))}</a>`;
+}
+function viewGroup(g) {
+  const items = groups().get(g);
+  if (!items) return notFound();
+  const sy = S.sy;
+  let h = topbar(esc(g), '#cong') + `<div class="sub" style="margin-bottom:12px">${sy} 봉사연도 (${sy - 1}.9 ~ ${sy}.8)</div><div class="list">`;
+  items.forEach(it => {
+    const evs = congOf(it.id, sy);
+    h += `<section class="card col" aria-label="${esc(it.name)}">
+      <div class="between"><div class="col" style="gap:2px"><div style="font-weight:700">${esc(it.name)}</div>
+        <div class="sub" style="font-size:12px">${esc(it.freq || (it.times ? `연 ${it.times}회` : '수시'))} · 알림 ${esc(leadLabel(it.leadDays))}</div></div>
+        <a href="#item/${it.id}" class="icon-btn ghost" aria-label="${esc(it.name)} 항목 편집">${ico.edit}</a></div>
+      ${it.prep.length ? `<div class="sub">준비사항: ${esc(it.prep.join(', '))}</div>` : ''}`;
+    if (it.slotType) {
+      SLOTS[it.slotType].forEach(slot => {
+        const se = evs.filter(e => slotOf(e) === slot);
+        h += `<div class="sub" style="font-weight:600;color:var(--ink);margin-top:4px">${slot} <span class="mute" style="font-weight:400">(${SLOT_HINT[slot]})</span></div>`;
+        se.forEach(e => { h += congEvLine(e); });
+        if (!se.length) h += `<a class="btn dash block" href="#new/c/${it.id}?slot=${encodeURIComponent(slot)}&sy=${sy}">+ ${slot} 일정 잡기</a>`;
+      });
+    } else {
+      const remain = it.times ? Math.max(0, it.times - evs.length) : 0;
+      evs.forEach(e => { h += congEvLine(e); });
+      if (!evs.length) h += `<div class="sub">${remain ? `아직 날짜가 잡히지 않았습니다 (${remain}회 남음)` : '등록된 일정 없음'}</div>`;
+      else if (remain) h += `<div class="sub">${remain}회 더 잡아야 합니다</div>`;
+      h += `<a class="btn dash block" href="#new/c/${it.id}?sy=${sy}">+ 일정 잡기</a>`;
+    }
+    h += `</section>`;
+  });
+  return h + `</div>`;
+}
 function viewRecords() {
   const q = S.recQ.trim().toLowerCase();
-  const done = S.events.filter(e => e.done).filter(e => !q || [e.title, e.memo, e.place, itemOf(e.itemId)?.group].join(' ').toLowerCase().includes(q)).sort(byStart).reverse();
-  let h = `<h1 class="h1" style="margin-bottom:4px">기록보관</h1><div class="sub" style="margin-bottom:14px">완료 처리한 일정과 그때의 준비·메모 기록</div>
-  <label class="sr" for="recq">기록 검색</label>
-  <input id="recq" data-act="recq" value="${esc(S.recQ)}" placeholder="제목, 메모, 장소로 검색" style="width:100%;border:1px solid var(--line);border-radius:12px;min-height:46px;padding:0 14px;margin-bottom:14px;background:#fff">`;
+  const done = S.cev.filter(e => e.done).filter(e => !q || [e.title, e.note, e.place, itemOf(e.itemId)?.group].join(' ').toLowerCase().includes(q)).sort(byStart).reverse();
+  let h = `<label class="sr" for="recq">기록 검색</label>
+  <input id="recq" class="inp" data-act="recq" value="${esc(S.recQ)}" placeholder="제목, 메모, 장소로 검색" style="margin-bottom:12px">`;
   if (!done.length) return h + `<div class="card empty">${q ? '검색 결과가 없습니다' : '아직 기록보관된 일정이 없습니다.<br>일정 상세에서 「완료 후 기록보관」을 누르면 여기에 쌓입니다.'}</div>`;
   let cy = null;
   done.forEach(e => {
-    if (yearOf(e) !== cy) { if (cy !== null) h += `</div>`; cy = yearOf(e); h += `<h2 class="h2" style="margin:8px 0 10px">${cy}년</h2><div class="list" style="margin-bottom:10px">`; }
-    h += `<a href="#event/${e.id}" class="card col" style="text-decoration:none;color:var(--ink);gap:4px">
+    const y = syOf(e.start);
+    if (y !== cy) { if (cy !== null) h += `</div>`; cy = y; h += `<h2 class="h2">${cy} 봉사연도</h2><div class="list">`; }
+    h += `<a href="#ev/c/${encodeURIComponent(e.id)}" class="card col" style="text-decoration:none;color:var(--ink);gap:4px">
       <div class="between"><span style="font-weight:600" class="ellipsis">${esc(e.title)}</span><span class="sub" style="font-size:12px;flex:none">${span(e)}</span></div>
-      <div class="sub" style="font-size:12px">${esc(itemOf(e.itemId)?.group || '')} · 준비 ${doneTasks(e)}/${(e.tasks || []).length}${e.place ? ' · ' + esc(e.place) : ''}</div>
-      ${e.memo ? `<div class="sub ellipsis" style="font-size:13px;color:var(--ink)">${esc(e.memo.split('\n')[0])}</div>` : ''}</a>`;
+      <div class="sub" style="font-size:12px">${esc(itemOf(e.itemId)?.group || '')}${slotOf(e) ? ' · ' + slotOf(e) : ''} · 준비 ${doneCount(e)}/${(e.checklist || []).length}${e.place ? ' · ' + esc(e.place) : ''}</div>
+      ${e.note ? `<div class="ellipsis" style="font-size:13px">${esc(e.note.split('\n')[0])}</div>` : ''}</a>`;
   });
   return h + `</div>`;
 }
 
-/* ---------- 화면: 설정 ---------- */
-function viewSettings() {
-  let st;
-  if (!FIREBASE_CONFIG) st = `<div style="font-weight:600">기기 저장 모드</div><div class="sub">이 기기의 브라우저에만 저장됩니다. 다른 기기와 동기화하려면 index.html 맨 위 <b>FIREBASE_CONFIG</b>에 Firebase 설정값을 넣어 주세요.</div>`;
-  else if (S.cloudError) st = `<div style="font-weight:600;color:var(--late)">클라우드 연결 오류</div><div class="sub">${esc(S.cloudError)}</div>`;
-  else if (!S.cloudReady) st = `<div style="font-weight:600">Firebase 연결 중…</div>`;
-  else if (S.user) st = `<div style="font-weight:600">클라우드 동기화 중</div><div class="sub">${esc(S.user.email || S.user.displayName || '')}</div><button class="btn block" style="margin-top:10px" data-act="logout">로그아웃</button>`;
-  else st = `<div style="font-weight:600">로그인 전 (기기 저장 중)</div><div class="sub">로그인하면 이 기기에 있던 내용이 처음 한 번 클라우드로 옮겨집니다.</div><button class="btn primary block" style="margin-top:10px" data-act="login">Google 계정으로 로그인</button>`;
-  let h = `<h1 class="h1" style="margin-bottom:14px">설정</h1>
-  <section class="card col" style="gap:6px;margin-bottom:16px" aria-label="저장 방식">${st}</section>
-  <div class="between" style="margin-bottom:10px"><h2 class="h2" style="margin:0">일정 항목 관리</h2><a href="#item/new" class="btn" style="min-height:40px;display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)">+ 항목 추가</a></div>
-  <div class="card" style="padding:2px 14px;margin-bottom:16px">`;
-  sortedItems().forEach(it => {
-    h += `<a href="#item/${it.id}" class="kv" style="text-decoration:none;color:var(--ink)"><span class="ellipsis"><span class="sub" style="font-size:12px">${esc(it.group)} ›</span> ${esc(it.name)}</span><span class="row sub" style="font-size:12px;flex:none;gap:4px">${esc(leadLabel(it.leadDays))}${ico.next}</span></a>`;
-  });
-  h += `</div>
-  <h2 class="h2" style="margin:0 0 10px">백업</h2>
-  <div class="row" style="gap:10px;margin-bottom:8px">
-    <button class="btn grow" data-act="export">백업 파일 저장</button>
-    <button class="btn grow" data-act="import">백업 불러오기</button>
-  </div>
-  <div class="sub" style="margin-bottom:24px">불러오기는 같은 항목·일정은 덮어쓰고, 없는 것은 추가합니다 (기존 것을 지우지 않음).</div>
-  <div class="sub" style="text-align:center">엘더플래너 v${APP_VERSION}</div>`;
+/* =====================================================================
+   화면: 새 일정
+   ===================================================================== */
+function classSelect(area, sel, name) {
+  if (area === 'p') {
+    const list = cats().slice(); if (sel && !list.includes(sel)) list.push(sel);
+    return `<select name="${name}" class="inp">${list.map(c => `<option value="${esc(c)}" ${c === sel ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>`;
+  }
+  return `<select name="${name}" class="inp">${sortedItems().map(it => `<option value="${it.id}" ${it.id === sel ? 'selected' : ''}>${esc(it.group === it.name ? it.name : it.group + ' › ' + it.name)}</option>`).join('')}</select>`;
+}
+function viewNew(area, itemId, q) {
+  const d = q.get('d') || '', slot = q.get('slot') || '';
+  const it = area === 'c' ? (itemOf(itemId) || sortedItems()[0]) : null;
+  const qs = d ? `?d=${d}` : '';
+  let h = topbar('새 일정', area === 'c' && it ? `#group/${encodeURIComponent(it.group)}` : '#home') + `
+  <div class="seg" style="margin-bottom:14px"><a href="#new/p${qs}" class="${area === 'p' ? 'on' : ''}">개인 일정</a><a href="#new/c${itemId ? '/' + itemId : ''}${qs}" class="${area === 'c' ? 'on' : ''}">회중 일정</a></div>
+  <form class="col" data-form="new" data-area="${area}" data-slot="${esc(slot)}" style="gap:14px">
+    <label class="field">${area === 'c' ? '항목' : '구분'}${classSelect(area, area === 'c' ? it?.id : cats()[0], 'cls')}</label>
+    <label class="field">제목<input name="title" ${area === 'p' ? 'required' : ''} placeholder="${area === 'c' ? '비워 두면 항목 이름으로 자동 입력' : '일정 제목'}"></label>
+    ${slot ? `<div class="sub" style="color:var(--acc-d);font-weight:600">${esc(slot)} 일정입니다 · ${SLOT_HINT[slot] || ''} 안의 날짜를 넣어 주세요</div>` : ''}
+    <div class="row" style="gap:10px;align-items:flex-start">
+      <label class="field grow">시작일<input type="date" name="start" value="${esc(d)}" required></label>
+      <label class="field grow">종료일 (선택)<input type="date" name="end"></label>
+    </div>
+    <label class="field">장소<input name="place" placeholder="선택"></label>
+    ${area === 'c' ? `<label class="field">준비 알림<select name="lead">${leadOptions(it?.leadDays)}</select></label>
+    <div class="sub">항목의 준비사항이 체크 목록으로 들어갑니다. 저장 후 시간표·문서·메모를 추가할 수 있습니다.</div>` : `<div class="sub">저장 후 시간표, 체크리스트, 문서, 메모를 추가할 수 있습니다.</div>`}
+    <button class="btn primary block" type="submit">저장</button>
+  </form>`;
   return h;
 }
 
-/* ---------- 공통 ---------- */
-function topbar(back, title) {
-  return `<div class="topbar"><a href="${back}" class="icon-btn ghost" aria-label="뒤로">${ico.back}</a><div style="font-weight:600">${title}</div><span style="width:44px"></span></div>`;
+/* =====================================================================
+   화면: 일정 상세 (개인 · 회중 공통)
+   ===================================================================== */
+function findEv(area, id) { return (area === 'c' ? S.cev : S.pev).find(e => e.id === id); }
+function classOptionsFor(e) {
+  const list = cats().slice(); if (e.area === 'p' && e.cat && !list.includes(e.cat)) list.push(e.cat);
+  return `<optgroup label="개인">${list.map(c => `<option value="p:${esc(c)}" ${e.area === 'p' && e.cat === c ? 'selected' : ''}>개인 · ${esc(c)}</option>`).join('')}</optgroup>
+  <optgroup label="회중">${sortedItems().map(it => `<option value="c:${it.id}" ${e.area === 'c' && e.itemId === it.id ? 'selected' : ''}>회중 · ${esc(it.group === it.name ? it.name : it.group + ' › ' + it.name)}</option>`).join('')}</optgroup>`;
 }
-function notFound() { return topbar('#home', '') + `<div class="card empty">찾을 수 없습니다. 삭제되었을 수 있습니다.</div>`; }
-
-function render() {
-  const hash = decodeURIComponent(location.hash.slice(1) || 'home');
-  const [route, arg] = [hash.split('/')[0], hash.split('/').slice(1).join('/')];
-  let html;
-  switch (route) {
-    case 'group': html = viewGroup(arg); break;
-    case 'new': html = viewNew(arg); break;
-    case 'event': html = viewEvent(arg); break;
-    case 'item': html = viewItem(arg); break;
-    case 'cal': html = viewCal(); break;
-    case 'records': html = viewRecords(); break;
-    case 'settings': html = viewSettings(); break;
-    default: html = viewHome();
+function viewEvent(area, id) {
+  const e = findEv(area, id);
+  if (!e) return notFound();
+  const it = area === 'c' ? itemOf(e.itemId) : null;
+  const slot = slotOf(e), a = alertDate(e);
+  const back = it ? `#group/${encodeURIComponent(it.group)}` : '#home';
+  const cs = chipStyle(e);
+  let h = topbar('일정 상세', back) + `
+  <div class="col" style="gap:6px;margin-bottom:12px">
+    <div class="row" style="gap:6px;flex-wrap:wrap"><span class="chip" style="background:${cs.bg};color:${cs.fg}">${area === 'c' ? '회중 · ' + esc(it?.group || '') : '개인 · ' + esc(e.cat || '')}</span>
+      ${slot ? `<span class="chip st-set">${syOf(e.start)} 봉사연도 ${slot}</span>` : ''}${area === 'c' ? chip(evState(e)) : (e.done ? chip('done') : '')}</div>
+    <label class="sr" for="f-title">제목</label>
+    <input id="f-title" data-f="title" value="${esc(e.title)}" style="font-size:22px;font-weight:700;border:none;background:transparent;padding:4px 0;min-height:44px">
+  </div>
+  <div class="card" style="padding:2px 14px;margin-bottom:6px">
+    <label class="kv"><span class="sub">분류</span><select data-f="class">${classOptionsFor(e)}</select></label>
+    <label class="kv"><span class="sub">시작일</span><input type="date" data-f="start" value="${esc(e.start)}"></label>
+    <label class="kv"><span class="sub">종료일</span><input type="date" data-f="end" value="${esc(e.end || '')}"></label>
+    <label class="kv"><span class="sub">장소</span><input data-f="place" value="${esc(e.place || '')}" placeholder="입력"></label>
+    ${it?.slotType === 'season' ? `<label class="kv"><span class="sub">구분</span><select data-f="slot"><option value="">날짜로 자동 (${seasonOf(e.start)})</option>${SLOTS.season.map(s => `<option value="${s}" ${e.slot === s ? 'selected' : ''}>${s}</option>`).join('')}</select></label>` : ''}
+    ${area === 'c' ? `<label class="kv"><span class="sub">준비 알림</span><select data-f="leadDays">${leadOptions(leadOf(e))}</select></label>` : ''}
+    ${a ? `<div class="kv"><span class="sub">준비 시작</span><span style="font-weight:600;color:var(--warn-d)">${md(a)}</span></div>` : ''}
+  </div>`;
+  // 시간표
+  h += `<div class="between"><h2 class="h2">시간표</h2><button class="btn small" data-act="tl-add">+ 추가</button></div>`;
+  const tl = e.timeline || [];
+  h += tl.length ? `<div class="card" style="padding:2px 10px">${tl.map((x, i) => `<div class="line ${x.done ? 'done' : ''}">
+      <label class="sr" for="tlm${i}">시간</label><input id="tlm${i}" class="tm" data-tl="${i}" data-k="time" value="${esc(x.time || '')}" placeholder="09:00">
+      <label class="sr" for="tlx${i}">내용</label><input id="tlx${i}" class="t" data-tl="${i}" data-k="text" value="${esc(x.text || '')}" placeholder="내용">
+      <input type="checkbox" data-chk="tl" data-i="${i}" ${x.done ? 'checked' : ''} aria-label="완료">
+      <button class="icon-btn ghost" data-act="tl-del" data-i="${i}" aria-label="삭제">${ico.x}</button></div>`).join('')}</div>` : `<div class="sub">시간대별 진행 순서가 있으면 추가하세요.</div>`;
+  // 체크리스트 / 준비사항
+  const cl = e.checklist || [];
+  h += `<div class="between"><h2 class="h2">${area === 'c' ? '준비사항' : '체크리스트'}</h2><span class="sub">${doneCount(e)} / ${cl.length}</span></div>
+  <div class="card" style="padding:2px 10px">${cl.map((x, i) => `<div class="line ${x.done ? 'done' : ''}">
+      <input type="checkbox" data-chk="cl" data-i="${i}" ${x.done ? 'checked' : ''} aria-label="완료">
+      <label class="sr" for="cl${i}">항목</label><input id="cl${i}" class="t" data-cl="${i}" value="${esc(x.text || '')}">
+      <button class="icon-btn ghost" data-act="cl-del" data-i="${i}" aria-label="삭제">${ico.x}</button></div>`).join('')}
+    <form data-form="cl" class="row" style="padding:8px 0;gap:8px"><label class="sr" for="newcl">항목 추가</label>
+      <input id="newcl" name="t" class="inp" placeholder="${area === 'c' ? '준비사항 추가' : '체크 항목 추가'}" style="min-height:44px">
+      <button class="icon-btn" type="submit" style="background:var(--acc);color:#fff" aria-label="추가">${ico.plus}</button></form></div>`;
+  // 문서
+  const docs = e.docs || [];
+  h += `<div class="between"><h2 class="h2">문서</h2><a class="btn small" href="#doc/${area}/${encodeURIComponent(e.id)}/new">+ 문서</a></div>`;
+  h += docs.length ? `<div class="list">${docs.map(d => `<a href="#doc/${area}/${encodeURIComponent(e.id)}/${encodeURIComponent(d.id)}" class="card row" style="text-decoration:none;color:var(--ink)">${ico.doc}<span class="grow ellipsis" style="font-weight:600">${esc(d.title || '문서')}</span><span class="sub">${d.date ? mdShort(d.date) : ''}</span></a>`).join('')}</div>` : `<div class="sub">회의록, 계획표 같은 문서를 일정에 붙여 둘 수 있습니다.</div>`;
+  // 메모
+  h += `<label class="field" style="margin-top:4px"><span class="h2" style="color:var(--ink)">메모</span>
+    <textarea data-f="note" class="inp" rows="4" placeholder="협의 내용, 연락처, 다음에 참고할 점 등">${esc(e.note || '')}</textarea></label>`;
+  // 지난 기록 (회중)
+  if (area === 'c') {
+    const past = S.cev.filter(x => x.itemId === e.itemId && x.id !== e.id && x.done)
+      .sort((p, q) => ((slotOf(q) === slot) - (slotOf(p) === slot)) || q.start.localeCompare(p.start)).slice(0, 5);
+    if (past.length) {
+      h += `<h2 class="h2">지난 기록</h2><div class="list">${past.map(p => `<a href="#ev/c/${encodeURIComponent(p.id)}" class="card row" style="text-decoration:none;color:var(--ink);gap:12px">
+        <div style="width:48px;text-align:center;color:var(--ok-d);flex:none"><div style="font-size:11px">${syOf(p.start)}</div><div style="font-weight:700;font-size:14px">${slotOf(p) || (parse(p.start).getMonth() + 1) + '월'}</div></div>
+        <div class="grow"><div style="font-weight:600;font-size:14px" class="ellipsis">${esc(p.title)}</div><div class="sub ellipsis" style="font-size:12px">${p.note ? esc(p.note.split('\n')[0]) : `${span(p)} · 준비 ${doneCount(p)}/${(p.checklist || []).length}`}</div></div>${ico.next}</a>`).join('')}</div>`;
+    }
   }
-  const tab = ['cal', 'records', 'settings'].includes(route) ? route : 'home';
-  document.querySelectorAll('#tabs a').forEach(a => { const on = a.dataset.tab === tab; a.classList.toggle('on', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  h += `<div class="col" style="margin-top:18px">`;
+  if (area === 'c') h += e.done
+    ? `<div class="sub" style="text-align:center">${e.doneAt ? new Date(e.doneAt).toLocaleDateString('ko-KR') + ' 에 ' : ''}기록보관됨</div><button class="btn block" data-act="undone">기록보관 해제 (다시 진행중으로)</button>`
+    : `<button class="btn primary block" data-act="done">완료 후 기록보관</button>`;
+  else h += `<button class="btn ${e.done ? '' : 'primary'} block" data-act="${e.done ? 'undone' : 'done'}">${e.done ? '처리완료 해제' : '처리완료'}</button>`;
+  h += `<button class="btn danger block" data-act="delevent">이 일정 삭제</button></div>`;
+  return h;
+}
+
+/* ---------- 화면: 문서 ---------- */
+function dclRow(x = {}) {
+  return `<div class="line" data-dcl><input type="checkbox" ${x.done ? 'checked' : ''} aria-label="완료"><input class="t" value="${esc(x.text || '')}" placeholder="체크 항목" aria-label="체크 항목"><button type="button" class="icon-btn ghost" data-act="dcl-del" aria-label="삭제">${ico.x}</button></div>`;
+}
+function viewDoc(area, evId, docId) {
+  const e = findEv(area, evId);
+  if (!e) return notFound();
+  const d = docId === 'new' ? null : (e.docs || []).find(x => x.id === docId);
+  if (docId !== 'new' && !d) return notFound();
+  return topbar(d ? '문서 편집' : '새 문서', `#ev/${area}/${encodeURIComponent(evId)}`) + `
+  <div class="sub" style="margin-bottom:10px">${esc(e.title)}</div>
+  <form class="col" data-form="doc" data-area="${area}" data-ev="${esc(evId)}" data-doc="${esc(docId)}" style="gap:14px">
+    <label class="field">제목<input name="title" value="${esc(d?.title || '')}" placeholder="예: 장로모임 회의록"></label>
+    <label class="field">날짜<input type="date" name="date" value="${esc(d?.date || today())}"></label>
+    <label class="field">내용<textarea name="body" rows="10">${esc(d?.body || '')}</textarea></label>
+    <div class="between"><span class="sub">체크 항목</span><button type="button" class="btn small" data-act="dcl-add">+ 추가</button></div>
+    <div class="card" style="padding:2px 10px" id="dcl">${(d?.checklist || []).map(dclRow).join('')}</div>
+    <button class="btn primary block" type="submit">저장</button>
+    ${d ? `<button class="btn danger block" type="button" data-act="deldoc">문서 삭제</button>` : ''}
+  </form>`;
+}
+
+/* ---------- 화면: 메모 ---------- */
+function viewMemos() {
+  const ms = S.memos.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  let h = `<div class="between" style="margin-bottom:14px"><h1 class="h1">중요 메모</h1><a class="btn small" href="#memo/new">+ 새 메모</a></div>`;
+  if (!ms.length) return h + `<div class="card empty">저장된 메모가 없습니다</div>`;
+  return h + `<div class="list">${ms.map(m => { const dt = m.updatedAt ? new Date(m.updatedAt) : null; return `<a href="#memo/${encodeURIComponent(m.id)}" class="card col" style="text-decoration:none;color:var(--ink);gap:4px">
+    <div style="font-weight:600" class="ellipsis">${esc(m.title || '(제목없음)')}</div>
+    <div class="sub" style="font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc((m.body || '').replace(/\n/g, ' '))}</div>
+    <div class="sub" style="font-size:11px">${dt ? `${dt.getFullYear()}.${pad(dt.getMonth() + 1)}.${pad(dt.getDate())}` : ''}</div></a>`; }).join('')}</div>`;
+}
+function viewMemo(id) {
+  const m = id === 'new' ? null : S.memos.find(x => x.id === id);
+  if (id !== 'new' && !m) return notFound();
+  return topbar(m ? '메모 편집' : '새 메모', '#memo') + `
+  <form class="col" data-form="memo" data-id="${esc(id)}" style="gap:14px">
+    <label class="field">제목<input name="title" value="${esc(m?.title || '')}"></label>
+    <label class="field">내용<textarea name="body" rows="12">${esc(m?.body || '')}</textarea></label>
+    <button class="btn primary block" type="submit">저장</button>
+    ${m ? `<button class="btn danger block" type="button" data-act="delmemo">메모 삭제</button>` : ''}
+  </form>`;
+}
+
+/* ---------- 화면: 설정 ---------- */
+function viewSettings() {
+  const u = S.user, mg = S.profile.migrated;
+  const perm = 'Notification' in window ? Notification.permission : 'unsupported';
+  let h = `<h1 class="h1" style="margin-bottom:14px">설정</h1>
+  <section class="card col" style="gap:6px" aria-label="계정">
+    <div style="font-weight:600">${esc(u.displayName || '')}</div><div class="sub">${esc(u.email || '')} · Google 계정으로 동기화 중</div>
+    <button class="btn block" style="margin-top:6px" data-act="logout">로그아웃</button>
+  </section>
+  <h2 class="h2">기존 데이터 가져오기</h2>
+  <section class="card col" style="gap:8px">
+    ${mg ? `<div class="sub">✓ 연간 플래너(아이디 <b>${esc(mg.from)}</b>)에서 ${new Date(mg.at).toLocaleDateString('ko-KR')}에 가져왔습니다. 개인 ${mg.personal ?? 0}건 · 회중 ${mg.cong ?? 0}건</div>` : `<div class="sub">예전 연간 플래너(아이디·비밀번호 로그인)의 일정, 할 일, 메모를 이 계정으로 옮깁니다.</div>`}
+    <a class="btn block" href="#migrate">${mg ? '다시 가져오기' : '연간 플래너 데이터 가져오기'}</a>
+    <button class="btn block" data-act="import">엘더플래너 백업 파일 불러오기</button>
+  </section>
+  <h2 class="h2">개인 일정 구분</h2>
+  <form class="card col" data-form="cats" style="gap:4px">
+    <div id="catlist">${cats().map((c, i) => catRow(c, i)).join('')}</div>
+    <div class="row" style="gap:8px;margin-top:6px"><button type="button" class="btn small grow" data-act="addcat">+ 구분 추가</button><button class="btn small primary grow" type="submit">저장</button></div>
+  </form>
+  <h2 class="h2">회중 주요 일정 항목</h2>
+  <div class="card" style="padding:2px 14px">
+    ${sortedItems().map(it => `<a href="#item/${it.id}" class="kv" style="text-decoration:none;color:var(--ink)"><span class="ellipsis"><span class="sub" style="font-size:12px">${esc(it.group)} ›</span> ${esc(it.name)}</span><span class="row sub" style="font-size:12px;flex:none;gap:4px">${it.slotType ? esc(SLOTS[it.slotType].join('/')) + ' · ' : ''}${esc(leadLabel(it.leadDays))}${ico.next}</span></a>`).join('')}
+  </div>
+  <a class="btn block" style="margin-top:10px" href="#item/new">+ 회중 항목 추가</a>
+  <h2 class="h2">알림</h2>
+  <section class="card col" style="gap:8px">
+    <div class="sub">일정 시작 전날 18시부터 알림이 뜨고, 회중 일정은 정해 둔 준비 시점(3달 전 등)부터 「지금 준비할 일」에 올라옵니다. 휴대폰 알림은 앱이 열려 있을 때 보내집니다.</div>
+    <div class="sub">휴대폰 알림 권한: <b>${perm === 'granted' ? '허용됨' : perm === 'denied' ? '차단됨 (브라우저 설정에서 허용해 주세요)' : perm === 'unsupported' ? '이 기기에서 지원 안 함' : '아직 묻지 않음'}</b></div>
+    ${perm === 'default' ? `<button class="btn block" data-act="notif">알림 허용하기</button>` : ''}
+  </section>
+  <h2 class="h2">백업</h2>
+  <div class="row" style="gap:10px"><button class="btn grow" data-act="export">백업 파일 저장</button><button class="btn grow" data-act="import">백업 불러오기</button></div>
+  <div class="sub" style="margin:8px 0 24px">불러오기는 같은 것은 덮어쓰고 없는 것은 추가합니다 (기존 것을 지우지 않음).</div>
+  <div class="sub" style="text-align:center">${APP_NAME} v${APP_VERSION}</div>`;
+  return h;
+}
+function catRow(c, i) {
+  return `<div class="line" data-cat><span style="width:14px;height:14px;border-radius:99px;background:${CAT_COLORS[i % 7]};flex:none;margin:0 6px"></span>
+    <input class="t" value="${esc(c)}" data-orig="${esc(c)}" placeholder="구분 이름" aria-label="구분 이름"><button type="button" class="icon-btn ghost" data-act="delcat" aria-label="삭제">${ico.x}</button></div>`;
+}
+function viewItem(id) {
+  const isNew = id === 'new';
+  const it = isNew ? { id: 'i' + newId(), group: '', name: '', freq: '', times: 1, slotType: null, prep: [], leadDays: null } : itemOf(id);
+  if (!it) return notFound();
+  const used = S.cev.some(e => e.itemId === it.id);
+  return topbar(isNew ? '새 회중 항목' : '항목 편집', isNew ? '#settings' : `#group/${encodeURIComponent(it.group)}`) + `
+  <form class="col" data-form="item" data-id="${esc(it.id)}" data-new="${isNew ? 1 : ''}" style="gap:14px">
+    <label class="field">그룹 (회중 탭의 카드)<input name="group" value="${esc(it.group)}" list="grouplist" required></label>
+    <datalist id="grouplist">${[...new Set(S.items.map(i => i.group))].map(g => `<option value="${esc(g)}">`).join('')}</datalist>
+    <label class="field">항목 이름<input name="name" value="${esc(it.name)}" required></label>
+    <label class="field">주기 표시<input name="freq" value="${esc(it.freq)}" placeholder="예: 연 2회, 봄"></label>
+    <label class="field">칸 나누기<select name="slotType">
+      <option value="" ${!it.slotType ? 'selected' : ''}>나누지 않음 (1차, 2차…)</option>
+      <option value="half" ${it.slotType === 'half' ? 'selected' : ''}>상반기(9~3월) · 하반기(4~8월)</option>
+      <option value="season" ${it.slotType === 'season' ? 'selected' : ''}>가을(9~2월) · 봄(3~8월)</option></select></label>
+    <label class="field">봉사연도 횟수<input name="times" type="number" min="0" max="52" value="${it.times ?? 0}"></label>
+    <div class="sub" style="margin-top:-8px">0 = 수시 (경조사처럼 정해진 횟수 없음). 칸을 나누면 2회로 계산합니다.</div>
+    <label class="field">기본 준비 알림<select name="lead">${leadOptions(it.leadDays)}</select></label>
+    <label class="field">기본 준비사항 (한 줄에 하나)<textarea name="prep" rows="4">${esc((it.prep || []).join('\n'))}</textarea></label>
+    <button class="btn primary block" type="submit">저장</button>
+    ${isNew || it.id === 'unc' ? '' : (used ? `<div class="sub" style="text-align:center">이 항목에 일정이 있어 삭제할 수 없습니다.</div>` : `<button class="btn danger block" type="button" data-act="delitem">항목 삭제</button>`)}
+  </form>`;
+}
+
+/* =====================================================================
+   화면: 기존 연간 플래너 데이터 가져오기
+   ===================================================================== */
+function targetOptions(sel, oldCat) {
+  return `<option value="p" ${sel === 'p' ? 'selected' : ''}>개인 일정 (구분: ${esc(oldCat || '없음')})</option>
+  <optgroup label="회중 일정">${sortedItems().map(it => `<option value="${it.id}" ${it.id === sel ? 'selected' : ''}>회중 · ${esc(it.group === it.name ? it.name : it.group + ' › ' + it.name)}</option>`).join('')}</optgroup>`;
+}
+function viewMigrate() {
+  const m = S.mig;
+  let h = topbar('기존 데이터 가져오기', '#settings');
+  if (!m || m.step === 'login') {
+    return h + `<div class="card col" style="gap:10px;margin-bottom:14px">
+      <div style="font-weight:600">연간 플래너에서 쓰던 아이디와 비밀번호를 입력하세요</div>
+      <div class="sub">확인 후 옮길 일정 목록을 먼저 보여 드립니다. 이 단계에서는 아무것도 바뀌지 않습니다.</div></div>
+    <form class="col" data-form="miglogin" style="gap:14px">
+      <label class="field">아이디<input name="id" autocomplete="username" required value="${esc(m?.oldId || '')}"></label>
+      <label class="field">비밀번호<input name="pw" type="password" autocomplete="current-password" required></label>
+      ${m?.error ? `<div class="card" style="background:var(--late-l);color:var(--late);font-size:14px">${esc(m.error)}</div>` : ''}
+      <button class="btn primary block" type="submit" ${m?.busy ? 'disabled' : ''}>${m?.busy ? '확인 중…' : '다음'}</button>
+    </form>`;
+  }
+  if (m.step === 'done') {
+    return h + `<div class="card col" style="gap:8px"><div style="font-weight:700;font-size:17px">가져오기 완료</div>
+      <div class="sub">개인 일정 ${m.result.personal}건 · 회중 일정 ${m.result.cong}건 · 할 일 ${m.result.todoDays}일치 · 메모 ${m.result.memos}건을 옮겼습니다.${m.result.skipped ? ` 날짜가 없는 일정 ${m.result.skipped}건은 건너뛰었습니다.` : ''}</div>
+      <div class="sub">예전 연간 플래너의 데이터는 그대로 남아 있습니다. 새 앱에서 내용을 확인하신 뒤 보안 규칙에서 예전 데이터 접근을 막아 주세요.</div></div>
+      <a class="btn primary block" style="margin-top:14px" href="#home">달력 보기</a>
+      <a class="btn block" style="margin-top:10px" href="#cong">회중 탭 보기</a>`;
+  }
+  const rows = m.rows, nc = rows.filter(r => r.target !== 'p').length;
+  const d = m.d;
+  h += `<div class="card col" style="gap:6px;margin-bottom:12px">
+    <div style="font-weight:700">${esc(m.name)} 님의 데이터</div>
+    <div class="sub">일정 ${rows.length}건 (회중 <b>${nc}</b> · 개인 <b>${rows.length - nc}</b>) · 할 일 ${Object.values(d.dailyTodos || {}).filter(a => a && a.length).length}일치 · 메모 ${(d.memos || []).length}건 · 문서 ${(d.docs || []).length}건</div>
+    <div class="sub">제목의 낱말로 자동 분류했습니다. <b>틀린 것만 바꿔 주세요.</b> 시간표, 체크리스트, 문서, 메모, 처리완료 표시는 그대로 옮겨집니다.</div>
+  </div>
+  <div class="card" style="padding:2px 14px;margin-bottom:14px">`;
+  rows.forEach((r, i) => {
+    const e = r.ev;
+    h += `<div class="migrow ${r.target !== 'p' ? 'c' : ''}">
+      <div class="between"><span style="font-weight:600" class="ellipsis">${esc(e.title || '(제목없음)')}</span><span class="sub" style="flex:none;font-size:12px">${span(e)}</span></div>
+      <label class="sr" for="mg${i}">${esc(e.title)} 분류</label>
+      <select id="mg${i}" data-mig="${i}">${targetOptions(r.target, e.cat)}</select></div>`;
+  });
+  if (!rows.length) h += `<div class="empty">옮길 일정이 없습니다</div>`;
+  h += `</div>
+  <button class="btn primary block" data-act="mig-run" ${m.busy ? 'disabled' : ''}>${m.busy ? '옮기는 중…' : `${rows.length}건 옮기기`}</button>
+  <button class="btn block" style="margin-top:10px" data-act="mig-cancel">취소</button>`;
+  return h;
+}
+async function migLogin(id, pw) {
+  S.mig = { step: 'login', oldId: id, busy: true }; render();
+  try {
+    if (id === 'master') throw new Error('마스터 계정이 아닌, 일정을 쓰던 개인 아이디를 입력해 주세요.');
+    const meta = await F.getDoc(F.doc(db, 'planner', 'meta'));
+    if (!meta.exists()) throw new Error('예전 연간 플래너 데이터를 찾지 못했습니다.');
+    const u = (meta.data().users || []).find(x => x.id === id && x.pw === pw);
+    if (!u) throw new Error('아이디 또는 비밀번호가 맞지 않습니다.');
+    const snap = await F.getDoc(F.doc(db, 'planner', 'user_' + id));
+    if (!snap.exists()) throw new Error('이 아이디의 일정 데이터가 없습니다.');
+    const d = snap.data();
+    const evs = d.events || [];
+    S.mig = { step: 'preview', oldId: id, name: u.name || id, d, skipped: evs.filter(e => !e.start).length,
+      rows: evs.filter(e => e.start).sort(byStart).map(ev => ({ ev, target: classify(ev) })) };
+  } catch (err) {
+    const msg = err.code === 'permission-denied' ? '보안 규칙이 예전 데이터 읽기를 막고 있습니다. firestore.rules의 「예전 연간 플래너」 부분이 들어 있는지 확인해 주세요.'
+      : err.code === 'unavailable' ? '인터넷에 연결된 상태에서 다시 시도해 주세요.' : err.message;
+    S.mig = { step: 'login', oldId: id, error: msg };
+  }
+  render();
+}
+async function migRun() {
+  const m = S.mig; if (!m || m.busy) return;
+  m.busy = true; render();
+  try {
+    const d = m.d, now = Date.now();
+    const docsById = new Map((d.docs || []).map(x => [x.id, x])), used = new Set();
+    const ops = []; let np = 0, nc = 0;
+    m.rows.forEach(({ ev: o, target }) => {
+      const docs = (o.docs || []).map(id => { used.add(id); return docsById.get(id); }).filter(Boolean)
+        .map(x => ({ id: x.id || newId(), title: x.title || '문서', date: x.date || '', body: x.body || '', checklist: x.checklist || [] }));
+      const base = { id: o.id || newId(), title: o.title || '(제목없음)', start: o.start, end: o.end && o.end > o.start ? o.end : '', place: o.place || '',
+        done: !!o.done, doneAt: o.done ? now : null, timeline: o.timeline || [], checklist: o.checklist || [], docs, note: o.quickNote || '',
+        created: now, updated: now, from: 'k-planner' };
+      if (target === 'p') { np++; ops.push(['set', uref('events', base.id), { ...base, area: 'p', cat: o.cat || '' }]); }
+      else {
+        nc++; const it = itemOf(target);
+        const checklist = base.checklist.length || base.done ? base.checklist : (it?.prep || []).map(t => ({ text: t, done: false }));   // 비어 있으면 항목의 기본 준비사항
+        ops.push(['set', pref('events', base.id), { ...base, checklist, area: 'c', itemId: target, slot: null, leadDays: it?.leadDays ?? null }]);
+      }
+    });
+    let todoDays = 0;
+    Object.entries(d.dailyTodos || {}).forEach(([date, items]) => { if (Array.isArray(items) && items.length) { todoDays++; ops.push(['set', uref('todos', date), { date, items }]); } });
+    (d.memos || []).forEach(x => ops.push(['set', uref('memos', x.id || newId()), { id: x.id, title: x.title || '', body: x.body || '', updatedAt: x.updatedAt || now }]));
+    let orphan = 0;
+    (d.docs || []).filter(x => !used.has(x.id)).forEach(x => {   // 일정에 붙어 있지 않던 문서는 메모로
+      orphan++;
+      const body = [x.date || '', x.body || '', ...(x.checklist || []).map(c => `${c.done ? '☑' : '☐'} ${c.text}`)].filter(Boolean).join('\n');
+      ops.push(['set', uref('memos', 'doc_' + x.id), { id: 'doc_' + x.id, title: x.title || '문서', body, updatedAt: now }]);
+    });
+    const result = { personal: np, cong: nc, todoDays, memos: (d.memos || []).length + orphan, skipped: m.skipped };
+    const prof = { migrated: { from: m.oldId, at: now, personal: np, cong: nc } };
+    if (Array.isArray(d.categories) && d.categories.length) prof.categories = [...new Set([...d.categories, ...(S.profile.categories || [])])];
+    ops.push(['merge', uref(), prof]);
+    await commitOps(ops);
+    S.mig = { step: 'done', result };
+  } catch (err) {
+    m.busy = false; toast('옮기기 실패: ' + (err.code || err.message));
+  }
+  render();
+}
+
+/* ---------- 백업 ---------- */
+function exportJSON() {
+  const data = { app: 'elder-planner-unified', version: APP_VERSION, exported: new Date().toISOString(),
+    categories: cats(), items: S.items, personalEvents: S.pev, congEvents: S.cev, todos: S.todos, memos: S.memos };
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  const a = document.createElement('a'); a.href = url; a.download = `${APP_NAME}_백업_${today()}.json`; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function importJSON(d) {
+  const ops = [];
+  if (d.app === 'elder-planner') {   // 엘더플래너 v0.1 백업
+    const oldItems = new Map((d.items || []).map(i => [i.id, i]));
+    (d.events || []).forEach(e => {
+      if (!e.start) return;
+      const name = oldItems.get(e.itemId)?.name;
+      const target = (ELDER_MAP[e.itemId] && itemOf(ELDER_MAP[e.itemId])) ? ELDER_MAP[e.itemId] : (S.items.find(i => i.name === name)?.id || 'unc');
+      ops.push(['set', pref('events', e.id), { id: e.id, area: 'c', itemId: target, slot: null, title: e.title || name || '회중 일정', start: e.start, end: e.end || '',
+        place: e.place || '', leadDays: e.leadDays ?? null, done: !!e.done, doneAt: e.doneAt || null, timeline: [],
+        checklist: (e.tasks || []).map(t => ({ text: t.t, done: !!t.done })), docs: [], note: e.memo || '', created: e.created || Date.now(), updated: Date.now() }]);
+    });
+  } else if (d.app === 'elder-planner-unified') {
+    (d.items || []).forEach(i => ops.push(['set', pref('items', i.id), i]));
+    (d.personalEvents || []).forEach(e => ops.push(['set', uref('events', e.id), { ...e, area: 'p' }]));
+    (d.congEvents || []).forEach(e => ops.push(['set', pref('events', e.id), { ...e, area: 'c' }]));
+    Object.entries(d.todos || {}).forEach(([date, items]) => { if (items.length) ops.push(['set', uref('todos', date), { date, items }]); });
+    (d.memos || []).forEach(m => ops.push(['set', uref('memos', m.id), m]));
+    if (Array.isArray(d.categories) && d.categories.length) ops.push(['merge', uref(), { categories: d.categories }]);
+  } else throw new Error('이 앱이나 엘더플래너의 백업 파일이 아닙니다');
+  if (!confirm(`${ops.length}개 항목을 불러올까요?`)) return;
+  await commitOps(ops);
+  toast('불러오기 완료');
+}
+document.getElementById('importFile').addEventListener('change', async ev => {
+  const file = ev.target.files[0]; ev.target.value = '';
+  if (!file) return;
+  try { await importJSON(JSON.parse(await file.text())); } catch (err) { toast('불러오기 실패: ' + (err.code || err.message)); }
+});
+
+/* ---------- 알림 ---------- */
+let notifTimer;
+function initNotifications() {
+  if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(() => { sendNotifications(); render(); });
+  sendNotifications();
+  clearInterval(notifTimer);
+  notifTimer = setInterval(() => { scheduleRender(false); sendNotifications(); }, 60 * 60 * 1000);
+}
+async function showNotif(body, tag) {
+  try {
+    const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.getRegistration() : null;
+    if (reg) await reg.showNotification(APP_NAME, { body, tag, icon: 'icon-192.png' });
+    else new Notification(APP_NAME, { body, tag });
+  } catch (e) { /* 지원하지 않는 기기 */ }
+}
+function sendNotifications() {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  let log = {};
+  try { log = JSON.parse(localStorage.getItem('ep_notif_sent') || '{}'); } catch (e) {}
+  const t = today();
+  windowAlerts().forEach(({ e, tag }) => {
+    const key = `${t}_${e.id}`; if (log[key]) return;
+    showNotif(tag === 'tomorrow' ? `내일(${mdShort(e.start)}) 일정: ${e.title}` : `오늘 일정: ${e.title}`, key); log[key] = t;
+  });
+  S.cev.filter(e => !e.done && evState(e) === 'prep' && alertDate(e)).forEach(e => {
+    const key = `prep_${e.id}_${alertDate(e)}`; if (log[key]) return;
+    showNotif(`준비 시작: ${e.title} (${md(e.start)})`, key); log[key] = t;
+  });
+  const cutoff = addDays(t, -60);
+  Object.keys(log).forEach(k => { if (log[k] < cutoff) delete log[k]; });
+  try { localStorage.setItem('ep_notif_sent', JSON.stringify(log)); } catch (e) {}
+}
+
+/* =====================================================================
+   렌더
+   ===================================================================== */
+function route() {
+  const h = location.hash.slice(1) || 'home';
+  const [path, qs] = h.split('?');
+  return { parts: path.split('/').map(decodeURIComponent), q: new URLSearchParams(qs || '') };
+}
+function render() {
+  const tabs = document.getElementById('tabs');
+  if (S.phase !== 'ready') {
+    tabs.hidden = true;
+    if (S.phase === 'login') $app.innerHTML = `<div class="login">
+      <div><img src="icon-192.png" alt="" width="72" height="72" style="border-radius:18px"></div>
+      <div><div class="eyebrow">ELDER PLANNER</div><h1 class="h1" style="font-size:28px">${APP_NAME}</h1><div class="sub" style="margin-top:6px">개인 일정과 회중 일정을 한 달력에서</div></div>
+      <button class="btn primary block" data-act="login">Google 계정으로 로그인</button>
+      <div class="sub">예전 연간 플래너의 아이디·비밀번호는 로그인 후<br>설정 › 기존 데이터 가져오기에서 한 번만 사용합니다.</div></div>`;
+    else if (S.phase === 'error') $app.innerHTML = `<div class="login"><h1 class="h1">연결 오류</h1><div class="card sub">${esc(S.err)}</div><button class="btn block" data-act="reload">다시 시도</button></div>`;
+    else $app.innerHTML = `<div class="login"><div class="sub">불러오는 중…</div></div>`;
+    return;
+  }
+  tabs.hidden = false;
+  const { parts, q } = route();
+  const [r, a1, a2, a3] = parts;
+  let html, tab = 'home';
+  switch (r) {
+    case 'today': html = viewToday(); tab = 'today'; break;
+    case 'cong': html = viewCong(a1); tab = 'cong'; break;
+    case 'group': html = viewGroup(a1); tab = 'cong'; break;
+    case 'new': html = viewNew(a1 === 'c' ? 'c' : 'p', a2, q); tab = a1 === 'c' ? 'cong' : 'home'; break;
+    case 'ev': html = viewEvent(a1, a2); tab = a1 === 'c' ? 'cong' : 'home'; break;
+    case 'doc': html = viewDoc(a1, a2, a3); tab = a1 === 'c' ? 'cong' : 'home'; break;
+    case 'memo': html = a1 ? viewMemo(a1) : viewMemos(); tab = 'memo'; break;
+    case 'settings': html = viewSettings(); tab = 'settings'; break;
+    case 'item': html = viewItem(a1); tab = 'settings'; break;
+    case 'migrate': html = viewMigrate(); tab = 'settings'; break;
+    default: html = viewCal();
+  }
+  document.querySelectorAll('#tabs a').forEach(x => { const on = x.dataset.tab === tab; x.classList.toggle('on', on); if (on) x.setAttribute('aria-current', 'page'); else x.removeAttribute('aria-current'); });
+  document.getElementById('todayDot').hidden = !(windowAlerts().length || prepAlerts().length);
   $app.innerHTML = html;
 }
-let lastRoute = '';
-window.addEventListener('hashchange', () => { const r = location.hash.split('/')[0]; if (r !== lastRoute) window.scrollTo(0, 0); lastRoute = r; render(); });
 
-/* ---------- 이벤트 처리 ---------- */
-const curEvent = () => { const m = location.hash.match(/^#event\/(.+)$/); return m ? S.events.find(e => e.id === decodeURIComponent(m[1])) : null; };
+/* =====================================================================
+   이벤트 처리
+   ===================================================================== */
+const curEv = () => { const { parts } = route(); return (parts[0] === 'ev' || parts[0] === 'doc') ? findEv(parts[1], parts[2]) : null; };
 
-$app.addEventListener('click', async ev => {
+$app.addEventListener('click', ev => {
+  const back = ev.target.closest('[data-back]');
+  if (back) { ev.preventDefault(); goBack(back.dataset.back); return; }
   const el = ev.target.closest('[data-act]');
-  if (!el) return;
-  const act = el.dataset.act;
-  const e = curEvent();
+  if (!el || el.tagName === 'INPUT') return;
+  const act = el.dataset.act, e = curEv(), c = S.cal;
   switch (act) {
-    case 'year': S.year += +el.dataset.d; render(); break;
-    case 'task': {
-      const i = +el.dataset.i; e.tasks[i].done = el.checked; saveEvent(e); break;
-    }
-    case 'deltask': e.tasks.splice(+el.dataset.i, 1); saveEvent(e); break;
-    case 'done': e.done = true; e.doneAt = Date.now(); await saveEvent(e); toast('기록보관했습니다'); break;
-    case 'undone': e.done = false; e.doneAt = null; saveEvent(e); break;
-    case 'delevent':
-      if (confirm('이 일정을 삭제할까요? 메모와 준비 기록도 함께 지워집니다.')) {
-        const it = itemOf(e.itemId); location.hash = it ? '#group/' + encodeURIComponent(it.group) : '#home'; removeEvent(e.id);
-      }
-      break;
-    case 'delitem':
-      if (confirm('이 항목을 삭제할까요?')) { location.hash = '#settings'; removeItem(el.dataset.id); }
-      break;
-    case 'calmode': S.cal.mode = el.dataset.m; render(); break;
-    case 'caltoday': S.cal.cursor = S.cal.sel = today(); render(); break;
+    case 'login': login(); break;
+    case 'reload': location.reload(); break;
+    case 'logout': if (confirm('로그아웃할까요?')) Au.signOut(auth); break;
+    /* 달력 */
+    case 'calmode': c.mode = el.dataset.m; render(); break;
+    case 'filter': c.filter = el.dataset.f; render(); break;
+    case 'caltoday': c.cursor = c.sel = today(); render(); break;
     case 'cal': {
-      const d = +el.dataset.d, c = parse(S.cal.cursor);
-      if (S.cal.mode === 'week') S.cal.cursor = addDays(S.cal.cursor, 7 * d);
-      else if (S.cal.mode === 'month') S.cal.cursor = ymd(new Date(c.getFullYear(), c.getMonth() + d, 1));
-      else S.cal.cursor = ymd(new Date(c.getFullYear() + d, 0, 1));
+      const d = +el.dataset.d, cur = parse(c.cursor);
+      if (c.mode === 'week') c.cursor = addDays(c.cursor, 7 * d);
+      else if (c.mode === 'month') { c.cursor = ymd(new Date(cur.getFullYear(), cur.getMonth() + d, 1)); c.sel = c.cursor.slice(0, 7) === today().slice(0, 7) ? today() : c.cursor; }
+      else c.cursor = ymd(new Date(cur.getFullYear() + d, 0, 1));
       render(); break;
     }
-    case 'selday': S.cal.sel = el.dataset.d; render(); break;
-    case 'pickmonth': { const c = parse(S.cal.cursor); S.cal.cursor = S.cal.sel = ymd(new Date(c.getFullYear(), +el.dataset.m, 1)); S.cal.mode = 'month'; render(); break; }
-    case 'login': login(); break;
-    case 'logout': Cloud.api.Au.signOut(Cloud.api.auth); break;
+    case 'selday': c.sel = el.dataset.d; render(); break;
+    case 'pickmonth': { const cur = parse(c.cursor); c.cursor = c.sel = ymd(new Date(cur.getFullYear(), +el.dataset.m, 1)); c.mode = 'month'; render(); break; }
+    /* 오늘 */
+    case 'tdate': S.todoDate = addDays(S.todoDate, +el.dataset.d); S.openNote = null; render(); break;
+    case 'ttoday': S.todoDate = today(); render(); break;
+    case 'todo-del': { const arr = S.todos[S.todoDate] || []; arr.splice(+el.dataset.i, 1); S.todos[S.todoDate] = arr; saveTodos(S.todoDate); render(); break; }
+    case 'todo-note': { const x = (S.todos[S.todoDate] || [])[+el.dataset.i]; if (x) { S.openNote = S.openNote === x.id ? null : x.id; render(); } break; }
+    /* 회중 */
+    case 'sy': S.sy += +el.dataset.d; render(); break;
+    /* 일정 상세 */
+    case 'tl-add': e.timeline = e.timeline || []; e.timeline.push({ time: '', text: '', done: false }); saveEv(e); document.getElementById('tlm' + (e.timeline.length - 1))?.focus(); break;
+    case 'tl-del': e.timeline.splice(+el.dataset.i, 1); saveEv(e); break;
+    case 'cl-del': e.checklist.splice(+el.dataset.i, 1); saveEv(e); break;
+    case 'done': e.done = true; e.doneAt = Date.now(); saveEv(e); toast(e.area === 'c' ? '기록보관했습니다' : '처리완료'); break;
+    case 'undone': e.done = false; e.doneAt = null; saveEv(e); break;
+    case 'delevent':
+      if (confirm('이 일정을 삭제할까요? 시간표, 체크리스트, 문서, 메모도 함께 지워집니다.')) { delEv(e); goBack(e.area === 'c' ? '#cong' : '#home'); }
+      break;
+    /* 문서 */
+    case 'dcl-add': document.getElementById('dcl').insertAdjacentHTML('beforeend', dclRow()); document.querySelector('#dcl [data-dcl]:last-child .t').focus(); break;
+    case 'dcl-del': el.closest('[data-dcl]').remove(); break;
+    case 'deldoc': {
+      const f = el.closest('form'); const host = findEv(f.dataset.area, f.dataset.ev);
+      if (host && confirm('이 문서를 삭제할까요?')) { host.docs = (host.docs || []).filter(x => x.id !== f.dataset.doc); saveEv(host, false); goBack(`#ev/${host.area}/${encodeURIComponent(host.id)}`); }
+      break;
+    }
+    /* 메모 */
+    case 'delmemo': {
+      const id = el.closest('form').dataset.id;
+      if (confirm('이 메모를 삭제할까요?')) { S.memos = S.memos.filter(x => x.id !== id); F.deleteDoc(uref('memos', id)).catch(fail('삭제 실패')); goBack('#memo'); }
+      break;
+    }
+    /* 설정 */
+    case 'addcat': { const l = document.getElementById('catlist'); l.insertAdjacentHTML('beforeend', catRow('', l.children.length)); l.lastElementChild.querySelector('.t').focus(); break; }
+    case 'delcat': el.closest('[data-cat]').remove(); break;
+    case 'delitem': {
+      const id = el.closest('form').dataset.id;
+      if (confirm('이 항목을 삭제할까요?')) { S.items = S.items.filter(x => x.id !== id); F.deleteDoc(pref('items', id)).catch(fail('삭제 실패')); nav('#settings', true); }
+      break;
+    }
+    case 'notif': Notification.requestPermission().then(() => { sendNotifications(); render(); }); break;
     case 'export': exportJSON(); break;
     case 'import': document.getElementById('importFile').click(); break;
+    /* 가져오기 */
+    case 'mig-run': migRun(); break;
+    case 'mig-cancel': S.mig = null; nav('#settings', true); break;
   }
 });
 
 $app.addEventListener('change', ev => {
-  const el = ev.target, f = el.dataset.f;
-  if (!f) return;
-  const e = curEvent(); if (!e) return;
+  const el = ev.target, e = curEv();
+  /* 체크박스 */
+  if (el.dataset.chk) {
+    const k = el.dataset.chk;
+    if (k === 'evdone') { const x = findEv(el.dataset.area, el.dataset.id); if (x) { x.done = el.checked; x.doneAt = el.checked ? Date.now() : null; saveEv(x); } }
+    else if (k === 'todo') { const x = (S.todos[S.todoDate] || [])[+el.dataset.i]; if (x) { x.done = el.checked; saveTodos(S.todoDate); render(); } }
+    else if (k === 'cl' && e) { e.checklist[+el.dataset.i].done = el.checked; saveEv(e); }
+    else if (k === 'tl' && e) { e.timeline[+el.dataset.i].done = el.checked; saveEv(e); }
+    return;
+  }
+  if (el.dataset.mig !== undefined) { S.mig.rows[+el.dataset.mig].target = el.value; render(); document.getElementById('mg' + el.dataset.mig)?.focus(); return; }
+  if (el.dataset.todo !== undefined) { const x = (S.todos[S.todoDate] || [])[+el.dataset.todo]; if (x) { x.text = el.value.trim() || x.text; saveTodos(S.todoDate); } return; }
+  if (el.dataset.todonote !== undefined) { const x = (S.todos[S.todoDate] || [])[+el.dataset.todonote]; if (x) { x.note = el.value; saveTodos(S.todoDate); } return; }
+  if (el.dataset.tl !== undefined && e) { e.timeline[+el.dataset.tl][el.dataset.k] = el.value; saveEv(e, false); return; }
+  if (el.dataset.cl !== undefined && e) { const v = el.value.trim(); if (v) { e.checklist[+el.dataset.cl].text = v; saveEv(e, false); } else el.value = e.checklist[+el.dataset.cl].text; return; }
+  if (el.name === 'cls' && el.form?.dataset.form === 'new' && el.form.dataset.area === 'c') { const it = itemOf(el.value); if (it) el.form.lead.value = it.leadDays ?? ''; return; }
+  const f = el.dataset.f;
+  if (!f || !e) return;
   let v = el.value;
-  if (f === 'title' && !v.trim()) { el.value = e.title; return; }
-  if (f === 'start' && !v) { el.value = e.start; return; }
-  if (f === 'end' && v && v < e.start) { toast('종료일이 시작일보다 빠릅니다'); el.value = e.end || ''; return; }
-  if (f === 'leadDays') v = v === '' ? null : +v;
-  e[f] = v;
-  if (f === 'start' && e.end && e.end < v) e.end = '';
-  saveEvent(e, ['start', 'end', 'leadDays'].includes(f));
+  switch (f) {
+    case 'title': if (!v.trim()) { el.value = e.title; return; } e.title = v.trim(); saveEv(e, false); return;
+    case 'start': {
+      if (!v) { el.value = e.start; return; }
+      const oldSy = syOf(e.start);
+      e.start = v; if (e.end && e.end < v) e.end = '';
+      if (e.area === 'c') { retitle(e); const it = itemOf(e.itemId); renumber(it, oldSy); if (syOf(v) !== oldSy) renumber(it, syOf(v)); else renumber(it, oldSy); }
+      saveEv(e); return;
+    }
+    case 'end': if (v && v < e.start) { toast('종료일이 시작일보다 빠릅니다'); el.value = e.end || ''; return; } e.end = v; saveEv(e); return;
+    case 'place': e.place = v; saveEv(e, false); return;
+    case 'note': e.note = v; saveEv(e, false); return;
+    case 'leadDays': e.leadDays = v === '' ? null : +v; saveEv(e); return;
+    case 'slot': e.slot = v || null; retitle(e); saveEv(e); return;
+    case 'class': {
+      const [area, val] = [v.slice(0, 1), v.slice(2)];
+      if (area === 'p') e.cat = val;
+      else if (e.itemId !== val || e.area !== 'c') {
+        const it = itemOf(val);
+        e.itemId = val; e.slot = null; e.leadDays = it?.leadDays ?? null;
+        if (it && !(e.checklist || []).length) e.checklist = it.prep.map(t => ({ text: t, done: false }));
+      }
+      if (area !== e.area) { moveEv(e, area); nav(`#ev/${area}/${encodeURIComponent(e.id)}`, true); toast(area === 'c' ? '회중 일정으로 옮겼습니다' : '개인 일정으로 옮겼습니다'); }
+      else saveEv(e);
+      return;
+    }
+  }
 });
 
 $app.addEventListener('input', ev => {
@@ -758,77 +1289,74 @@ $app.addEventListener('input', ev => {
 
 $app.addEventListener('submit', ev => {
   ev.preventDefault();
-  const form = ev.target, fd = new FormData(form);
-  const kind = form.dataset.form;
+  const form = ev.target, fd = new FormData(form), kind = form.dataset.form;
+  const e = curEv();
   if (kind === 'new') {
-    const it = itemOf(form.dataset.item);
-    const start = fd.get('start'), end = fd.get('end');
+    const area = form.dataset.area, start = fd.get('start'), end = fd.get('end');
     if (end && end < start) { toast('종료일이 시작일보다 빠릅니다'); return; }
-    const lead = fd.get('lead');
-    const e = {
-      id: 'e' + newId(), itemId: it.id, title: fd.get('title').trim() || it.name, start, end: end || '',
-      place: fd.get('place').trim(), leadDays: lead === '' ? null : +lead,
-      tasks: it.prep.map(t => ({ t, done: false })), memo: '', done: false, doneAt: null, created: Date.now()
-    };
-    S.year = yearOf(e);
-    location.hash = '#event/' + e.id;
-    saveEvent(e);
-    renumber(it, yearOf(e));
-  } else if (kind === 'task') {
+    const base = { id: 'e' + newId(), area, start, end: end || '', place: fd.get('place').trim(), done: false, doneAt: null,
+      timeline: [], checklist: [], docs: [], note: '', created: Date.now() };
+    let x;
+    if (area === 'p') x = { ...base, title: fd.get('title').trim(), cat: fd.get('cls') };
+    else {
+      const it = itemOf(fd.get('cls'));
+      const want = form.dataset.slot;
+      let slot = null;
+      if (it.slotType === 'season' && want && SLOTS.season.includes(want) && seasonOf(start) !== want) slot = want;
+      if (it.slotType === 'half' && want && halfOf(start) !== want) toast(`날짜상 ${halfOf(start)} 일정으로 들어갑니다`);
+      const lead = fd.get('lead');
+      x = { ...base, itemId: it.id, slot, leadDays: lead === '' ? null : +lead, checklist: it.prep.map(t => ({ text: t, done: false })),
+        title: fd.get('title').trim() || autoTitle(it, start, slot) + (!it.slotType && it.times > 1 ? ' 1차' : '') };
+      S.sy = syOf(start);
+    }
+    saveEv(x, false);
+    if (area === 'c') renumber(itemOf(x.itemId), syOf(start));
+    nav(`#ev/${area}/${encodeURIComponent(x.id)}`, true);
+  } else if (kind === 'cl' && e) {
     const t = fd.get('t').trim(); if (!t) return;
-    const e = curEvent(); e.tasks = e.tasks || []; e.tasks.push({ t, done: false }); saveEvent(e);
-    setTimeout(() => document.getElementById('newtask')?.focus(), 0);
+    e.checklist = e.checklist || []; e.checklist.push({ text: t, done: false }); saveEv(e);
+    document.getElementById('newcl')?.focus();
+  } else if (kind === 'todo') {
+    const t = fd.get('t').trim(); if (!t) return;
+    (S.todos[S.todoDate] = S.todos[S.todoDate] || []).push({ id: newId(), text: t, done: false });
+    saveTodos(S.todoDate); render(); document.getElementById('newtodo')?.focus();
+  } else if (kind === 'doc') {
+    const host = findEv(form.dataset.area, form.dataset.ev); if (!host) return;
+    const checklist = [...form.querySelectorAll('[data-dcl]')].map(r => ({ text: r.querySelector('.t').value.trim(), done: r.querySelector('[type=checkbox]').checked })).filter(x => x.text);
+    const docId = form.dataset.doc === 'new' ? newId() : form.dataset.doc;
+    const d = { id: docId, title: fd.get('title').trim() || '문서', date: fd.get('date'), body: fd.get('body'), checklist };
+    host.docs = host.docs || []; upsert(host.docs, d);
+    saveEv(host, false); toast('저장했습니다');
+    goBack(`#ev/${host.area}/${encodeURIComponent(host.id)}`);
+  } else if (kind === 'memo') {
+    const title = fd.get('title').trim(), body = fd.get('body');
+    if (!title && !body.trim()) { toast('내용을 입력해 주세요'); return; }
+    const id = form.dataset.id === 'new' ? newId() : form.dataset.id;
+    saveMemo({ id, title, body, updatedAt: Date.now() }); toast('저장했습니다'); goBack('#memo');
+  } else if (kind === 'cats') {
+    const rows = [...form.querySelectorAll('[data-cat] .t')];
+    const list = [...new Set(rows.map(i => i.value.trim()).filter(Boolean))];
+    if (!list.length) { toast('구분이 하나 이상 있어야 합니다'); return; }
+    rows.forEach(i => {   // 이름을 바꾼 구분은 그 구분의 일정도 함께 바꿈
+      const o = i.dataset.orig, n = i.value.trim();
+      if (o && n && o !== n && !list.includes(o)) S.pev.filter(x => x.cat === o).forEach(x => { x.cat = n; saveEv(x, false); });
+    });
+    saveProfile({ categories: list }); render(); toast('구분을 저장했습니다');
   } else if (kind === 'item') {
-    const id = form.dataset.id;
-    const old = itemOf(id) || { order: Math.max(0, ...S.items.map(i => i.order || 0)) + 1 };
-    const lead = fd.get('lead');
-    const it = {
-      ...old, id, group: fd.get('group').trim(), name: fd.get('name').trim(), freq: fd.get('freq').trim(),
-      times: Math.max(0, parseInt(fd.get('times'), 10) || 0), leadDays: lead === '' ? null : +lead,
-      prep: fd.get('prep').split('\n').map(s => s.trim()).filter(Boolean)
-    };
-    location.hash = '#group/' + encodeURIComponent(it.group);
-    saveItem(it); toast('저장했습니다');
+    const id = form.dataset.id, old = itemOf(id) || { order: Math.max(0, ...S.items.map(i => i.order || 0)) + 1 };
+    const slotType = fd.get('slotType') || null, lead = fd.get('lead');
+    const it = { ...old, id, group: fd.get('group').trim(), name: fd.get('name').trim(), freq: fd.get('freq').trim(), slotType,
+      times: slotType ? 2 : Math.max(0, parseInt(fd.get('times'), 10) || 0), leadDays: lead === '' ? null : +lead,
+      prep: fd.get('prep').split('\n').map(s => s.trim()).filter(Boolean) };
+    saveItem(it); toast('저장했습니다'); nav('#group/' + encodeURIComponent(it.group), true);
+  } else if (kind === 'miglogin') {
+    migLogin(fd.get('id').trim(), fd.get('pw'));
   }
 });
 
-/* 자동 제목(예: 순회방문 2차)인 일정만 그해 날짜 순서대로 차수를 다시 매김. 직접 바꾼 제목은 건드리지 않음 */
-function renumber(it, year) {
-  if (!(it.times > 1)) return;
-  const re = new RegExp('^' + it.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ' \\d+차$');
-  eventsOf(it.id, year).forEach((x, i) => {
-    const t = `${it.name} ${i + 1}차`;
-    if (re.test(x.title) && x.title !== t) { x.title = t; saveEvent(x); }
-  });
-}
-
-/* ---------- 백업 ---------- */
-function exportJSON() {
-  const data = { app: 'elder-planner', version: APP_VERSION, exported: new Date().toISOString(), items: S.items, events: S.events };
-  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
-  const a = document.createElement('a'); a.href = url; a.download = `엘더플래너_백업_${today()}.json`; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-document.getElementById('importFile').addEventListener('change', async ev => {
-  const file = ev.target.files[0]; ev.target.value = '';
-  if (!file) return;
-  try {
-    const d = JSON.parse(await file.text());
-    if (d.app !== 'elder-planner' || !Array.isArray(d.items) || !Array.isArray(d.events)) throw new Error('엘더플래너 백업 파일이 아닙니다');
-    if (!confirm(`항목 ${d.items.length}개, 일정 ${d.events.length}건을 불러올까요?`)) return;
-    d.items.forEach(i => upsert(S.items, i)); d.events.forEach(e => upsert(S.events, e));
-    render();
-    if (backend === Local) Local.persist();
-    else { for (const i of d.items) await Cloud.putItem(i); for (const e of d.events) await Cloud.putEvent(e); }
-    toast('불러오기 완료');
-  } catch (err) { toast('불러오기 실패: ' + err.message); }
-});
-
 /* ---------- 시작 ---------- */
-Local.load();
-lastRoute = location.hash.split('/')[0];
 render();
-if (FIREBASE_CONFIG) startCloud();
+boot();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>

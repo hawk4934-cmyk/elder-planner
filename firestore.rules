@@ -1,9 +1,15 @@
 rules_version = '2';
-// 엘더플래너 Firestore 보안 규칙
-// planners/{plannerId} 문서의 members 배열에 있는 사람만 읽고 쓸 수 있습니다.
-// 지금은 본인 uid 하나만 들어 있고, 나중에 공유할 때 다른 장로님 uid를 members에 추가하면 됩니다.
+// 엘더플래너 (개인 + 회중 통합) Firestore 보안 규칙
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ① 개인 데이터: 본인만 읽고 쓰기 (일정, 할 일, 메모, 프로필)
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // ② 회중 플래너: members 목록에 있는 사람만
+    //    지금은 본인 uid 하나. 나중에 장로님을 추가할 때 members에 그분 uid를 넣으면 됩니다.
     match /planners/{pid} {
       allow read: if request.auth != null
         && (request.auth.uid == pid || request.auth.uid in resource.data.members);
@@ -16,6 +22,13 @@ service cloud.firestore {
         allow read, write: if request.auth != null
           && request.auth.uid in get(/databases/$(database)/documents/planners/$(pid)).data.members;
       }
+    }
+
+    // ③ 예전 연간 플래너 (planner/meta, planner/user_*)
+    //    [지금] 예전 앱이 계속 동작하고 새 앱이 데이터를 가져올 수 있도록 지금처럼 열어 둡니다.
+    //    [가져오기를 마친 뒤] 아래 줄을  allow read, write: if false;  로 바꿔 잠가 주세요.
+    match /planner/{docId} {
+      allow read, write: if true;
     }
   }
 }
